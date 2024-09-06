@@ -1,38 +1,28 @@
-#! ~/Github/NIR-Capstone-1D-CNN/.venv/bin/python
 # Import Packages
 import os, sys
 import datetime as dt
 import pandas as pd
 
-global PATH, DATA_PATA
-RAW_PATH = ""
+global PATH, DATA_PATH, RAW_PATH
 EXTENSION = '.csv'
 TIME_STEP = 15
 TIME_BUFFER = 1
+DATA_PATH = "Datasets"
+RAW_PATH = "Testing_Data"
+# RAW_PATH = "Raw_Data/"
 
-def getSystemArgs():
-    print(sys.argv)
 
-    
 def getPath():
-    global PATH, RAW_PATH
-    cwd = os.getcwd()
-    PATH = os.path.dirname(os.path.abspath(''))
-    # print("Current working directory:", cwd)
-
-    if cwd.endswith("Data") == False:
-        RAW_PATH = cwd + "\Data"
-    else:
-        RAW_PATH = cwd
-
-    os.chdir(RAW_PATH)
-    #print(PATH, RAW_PATH)
+    global PATH
+    PATH = os.path.dirname(os.path.abspath(__file__))
+    print("Current Path:", PATH)
     return
 
 
 def getFileList():
+    # global RAW_PATH
     files = []
-    for x in os.listdir():
+    for x in os.listdir("/".join([PATH,RAW_PATH])):
         if x.endswith("i.csv"):
             continue
         elif x.endswith("r.csv"):
@@ -44,3 +34,6 @@ def getFileList():
 
     return files
 
+
+getPath()
+getFileList()
