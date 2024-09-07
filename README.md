@@ -45,12 +45,3 @@ To leave/deactivate the virtual environment, use this command within the termina
 ```bash
 deactivate
 ```
-#### Package Requirements
-The list of all required python packages are within the `requirements.txt` file. The packages can be downloaded using:
-```bash
-pip install -r requirements.txt
-```
-If contributing to the software and additional packages are used, the following command can be used to `freeze` all dependancies to the `requirements.txt` file.
-```bash
-pip freeze > requirements.txt
-```
