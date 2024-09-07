@@ -54,3 +54,6 @@ If contributing to the software and additional packages are used, the following 
 ```bash
 pip freeze > requirements.txt
 ```
+```
+another command
+```
