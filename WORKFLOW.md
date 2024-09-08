@@ -3,6 +3,7 @@
 ## Terms and Definitions
 
 `Origin` :  Remote Repository on Github\
+`Upstream`: Another name for the `origin`\
 `Master` :    The branch `main`, either local or remote
 
 ## Using Git and Github Collaboratively
@@ -26,7 +27,7 @@ All edits or feature additions should be done on a seperate `branch` of the `mai
 Before changes can be commit, they have to be added to the staging area.
 
 ```bash
-git add <file_name> # Adds file_name to the staging area
+git add <file> # Adds file_name to the staging area
 # OR
 git add . # Adds all edited files to the staging area
 ```
@@ -52,15 +53,30 @@ git commit -a
 #### Create New Feature Branch
 
 ```bash
-git branch <branch_name> # Create branch with name: branch_name
-git checkout <branch_name> # Switch to branch_name
+git branch <branch> # Create branch with name: branch_name
+git checkout <branch> # Switch to branch
 ```
 
 ```bash
-git checkout -b <branch_name> # Create Branch and Checkout
+git checkout -b <branch> # Create Branch and Checkout
 ```
 
 The `-b` flag on the checkout command will automatically create a new branch and switch to it.
+
+#### Setting up Remote Tracking
+
+Locally created branches have to be set up to track remote branches if they haven't been set up to do so automatically.
+
+```bash
+git checkout <branch> # Switch to branch
+git branch -u origin/<branch> # Set the local branch to track changes of remote branch
+```
+
+This following command can be used when the current branch is different than the target branch
+
+```bash
+git branch -u origin/<branch> <branch>
+```
 
 #### Pushing Commits to Remote
 
@@ -116,6 +132,7 @@ git commit # Commit changes from staging area
 git branch # List current local branches and create branches
     -r # List remote branches
     <branch> # Create new branch with name
+    -u origin/<branch> #Track changes of remote branch
 git checkout <branch> # Switches to named branch
     -b # Creates named branch and switches to branch
 git merge # merge branches together and commits
