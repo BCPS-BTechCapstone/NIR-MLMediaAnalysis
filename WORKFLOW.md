@@ -59,6 +59,7 @@ git checkout <branch> # Switch to branch
 
 ```bash
 git checkout -b <branch> # Create Branch and Checkout
+git checkout -b <new_branch_name> origin/<remote_branch_name> # Create Branch based on remote and Checkout
 ```
 
 The `-b` flag on the checkout command will automatically create a new branch and switch to it.
@@ -135,6 +136,7 @@ git branch # List current local branches and create branches
     -u origin/<branch> #Track changes of remote branch
 git checkout <branch> # Switches to named branch
     -b # Creates named branch and switches to branch
+    <new_branch_name> origin/<remote_branch_name> # Can be used after -b to create a branch from remote
 git merge # merge branches together and commits
     --no-commit # Perform merge but stop before commit
     --abort # Rolls back to pre-merge state, must be done before commit.
