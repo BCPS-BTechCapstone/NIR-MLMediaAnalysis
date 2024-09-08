@@ -3,7 +3,7 @@
 ## Terms and Definitions
 
 `Origin` :  Remote Repository on Github\
-`Upstream`: Another name for the `origin`\
+`Upstream`: Another name for `origin`\
 `Master` :    The branch `main`, either local or remote
 
 ## Using Git and Github Collaboratively
@@ -65,7 +65,7 @@ The `-b` flag on the checkout command will automatically create a new branch and
 
 #### Setting up Remote Tracking
 
-Locally created branches have to be set up to track remote branches if they haven't been set up to do so automatically.
+Local branches may have to be set up to track remote branches if they haven't been set up to do so automatically.
 
 ```bash
 git checkout <branch> # Switch to branch
