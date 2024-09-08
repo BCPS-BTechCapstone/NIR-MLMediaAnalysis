@@ -21,7 +21,22 @@ Capstone Project for 4TR1 & 4TR3
 Implement  NIR spectroscopy and machine learning for the detection and real-time analysis of media within cultures for continuous quality testing
 
 ## Software Setup
-### Python Virtual Environment:
+### Python Environment:
+#### Python Installation:
+The python installation version can be verified using:
+```bash
+python3 --version
+```
+Python can be updated or be installed if required using:
+```bash
+sudo apt-get update
+sudo apt-get install python3.10
+```
+Pip and Venv can then be installed using the following commands:
+```bash
+sudo apt install python3-pip
+sudo apt install python3.10-venv
+```
 #### Create Virtual Environment:
 The python environment is not included within the repository. A virtual environment can be created within the Linux terminal with:
 ```bash
@@ -46,7 +61,7 @@ To leave/deactivate the virtual environment, use this command within the termina
 deactivate
 ```
 #### Package Requirements
-The list of all required python packages are within the `requirements.txt` file. The packages can be downloaded using:
+The list of all required python packages are within the `requirements.txt` file. Before downloading packages, ensure that the virtual environment is active, or the packages will be installed to the normal python environment. The packages can be downloaded using:
 ```bash
 pip install -r requirements.txt
 ```
