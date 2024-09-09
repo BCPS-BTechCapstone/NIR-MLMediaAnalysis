@@ -6,7 +6,7 @@ import pandas as pd
 global PATH, DATA_PATH, RAW_PATH, SAMPLE
 EXTENSION = '.csv'
 TIME_STEP = 15 # Time delta between samples, replace with sys.argv later
-TIME_BUFFER = 1 # Time delta buffer to account for time build up due to sample read time
+TIME_BUFFER = 0.125 # Time delta buffer to account for time build up due to sample read time
 DATA_PATH = "Datasets"
 RAW_PATH = "Testing_Data"
 SAMPLES = ["Sample4"] # Replace with sys.arv later or ls
