@@ -89,8 +89,6 @@ def main():
     parser.add_argument('-e', '--export_path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
-    parser.add_argument('-t', '--drift_tolerance', type=int, default=6,
-                        help='Allowed drift tolerance in seconds for each scan (default: 6)')
 
     args = parser.parse_args()
 
@@ -99,7 +97,6 @@ def main():
     TIME_DELTA_INITIAL = args.initial_delta
     TIME_DELTA_APPEND = args.append_delta
     AUTO_CONFIRM = args.yes
-    DRIFT_TOLERANCE = timedelta(seconds=args.drift_tolerance)  # Drift tolerance for scan acquisition time
 
     # Get the absolute paths relative to the script directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -141,8 +138,8 @@ def main():
         for subsample_idx in range(1, NUM_SUBSAMPLES + 1):
             current_offset = current_offsets[subsample_idx - 1]  # Get the current offset for this subsample
 
-            # Check if this scan matches the current offset for the subsample, allowing for drift tolerance
-            if timepoints[subsample_idx - 1] is None or abs(scan_datetime - (timepoints[subsample_idx - 1] + timedelta(seconds=current_offset))) <= DRIFT_TOLERANCE:
+            # Check if this scan matches the current offset for the subsample
+            if timepoints[subsample_idx - 1] is None or scan_datetime - timepoints[subsample_idx - 1] >= timedelta(seconds=current_offset):
                 if subsample_dfs[subsample_idx].empty:
                     subsample_dfs[subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
                     subsample_dfs[subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
@@ -167,6 +164,7 @@ def main():
         # Calculate total time delta for the subsample
         total_time_delta = end_times[subsample_idx] - start_times[subsample_idx] if start_times[subsample_idx] and end_times[subsample_idx] else timedelta(0)
         print(f"Saved subsample: {subsample_name} with {scan_counts[subsample_idx]} scan(s) and total time delta of {total_time_delta}.")
+
 
 if __name__ == "__main__":
     main()
