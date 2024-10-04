@@ -82,13 +82,15 @@ def main():
                         help='Number of subsamples to create (default: 3)')
     parser.add_argument('-i', '--initial_delta', type=int, default=60,
                         help='Initial time delta between scans in seconds (default: 60)')
-    parser.add_argument('-d', '--append_delta', type=int, default=300,
-                        help='Time delta for appending in seconds after the first split (default: 300)')
+    parser.add_argument('-d', '--append_delta', type=int, default=900,
+                        help='Time delta for appending in seconds after the first split (default: 900)')
     parser.add_argument('-p', '--folder_path', type=str, default='Raw_Data',
                         help='Relative path to the folder containing the files (default: Raw_Data)')
     parser.add_argument('-e', '--export_path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
+    parser.add_argument('-t', '--drift_tolerance', type=int, default=6,
+                        help='Allowed drift tolerance in seconds for each scan (default: 6)')
 
     args = parser.parse_args()
 
@@ -97,6 +99,7 @@ def main():
     TIME_DELTA_INITIAL = args.initial_delta
     TIME_DELTA_APPEND = args.append_delta
     AUTO_CONFIRM = args.yes
+    DRIFT_TOLERANCE = timedelta(seconds=args.drift_tolerance)  # Drift tolerance for scan acquisition time
 
     # Get the absolute paths relative to the script directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -121,40 +124,49 @@ def main():
     files = sorted(files, key=lambda x: datetime.strptime(x.replace('.csv', '').split('_')[4], '%H%M%S'))
 
     subsample_dfs = {i: pd.DataFrame() for i in range(1, NUM_SUBSAMPLES + 1)}
-    timepoints = []
-    current_subsample_idx = 1
+    scan_counts = {i: 0 for i in range(1, NUM_SUBSAMPLES + 1)}  # To track the number of scans added
+    start_times = {i: None for i in range(1, NUM_SUBSAMPLES + 1)}  # Track start times
+    end_times = {i: None for i in range(1, NUM_SUBSAMPLES + 1)}  # Track end times
+    timepoints = [None] * NUM_SUBSAMPLES  # Initialize timepoints for each subsample
+    current_offsets = [i * TIME_DELTA_INITIAL for i in range(NUM_SUBSAMPLES)]  # Initial offsets
 
+    # Process each scan
     for i, file in enumerate(files):
         file_path = os.path.join(FOLDER_PATH, file)
         sample_name, protocol, scan_number, scan_datetime = extract_sample_info(file)
 
         df = pd.read_csv(file_path, skiprows=21)
 
-        if i == 0:
-            timepoints.append(scan_datetime)
+        # Determine which subsample this scan belongs to by using current offset for each subsample
+        for subsample_idx in range(1, NUM_SUBSAMPLES + 1):
+            current_offset = current_offsets[subsample_idx - 1]  # Get the current offset for this subsample
 
-        if len(subsample_dfs[current_subsample_idx]) == 0:
-            subsample_dfs[current_subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
-            subsample_dfs[current_subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
-        else:
-            if len(timepoints) >= current_subsample_idx:
-                if scan_datetime - timepoints[current_subsample_idx - 1] >= timedelta(seconds=TIME_DELTA_APPEND):
-                    subsample_dfs[current_subsample_idx][f'Absorbance (AU) {scan_datetime}'] = df['Absorbance (AU)'].values
-                    timepoints[current_subsample_idx - 1] = scan_datetime
+            # Check if this scan matches the current offset for the subsample, allowing for drift tolerance
+            if timepoints[subsample_idx - 1] is None or abs(scan_datetime - (timepoints[subsample_idx - 1] + timedelta(seconds=current_offset))) <= DRIFT_TOLERANCE:
+                if subsample_dfs[subsample_idx].empty:
+                    subsample_dfs[subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
+                    subsample_dfs[subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
+                else:
+                    subsample_dfs[subsample_idx][f'Absorbance (AU) {scan_datetime}'] = df['Absorbance (AU)'].values
 
-            if len(subsample_dfs[current_subsample_idx].columns) > NUM_SUBSAMPLES:
-                current_subsample_idx += 1
-                if current_subsample_idx <= NUM_SUBSAMPLES:
-                    subsample_dfs[current_subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
-                    subsample_dfs[current_subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
+                # Update timepoints, scan count, and start/end times
+                if start_times[subsample_idx] is None:
+                    start_times[subsample_idx] = scan_datetime  # Set start time for this subsample
+                end_times[subsample_idx] = scan_datetime  # Update the end time for this subsample
+                timepoints[subsample_idx - 1] = scan_datetime
+                scan_counts[subsample_idx] += 1
+                current_offsets[subsample_idx - 1] = TIME_DELTA_APPEND  # Switch to appending with the append delta
+                break
 
     # Save each subsample to a CSV file in the EXPORT_PATH
     for subsample_idx, subsample_df in subsample_dfs.items():
         subsample_name = f"{SAMPLE_NAME}_{subsample_idx}.csv"
         export_file_path = os.path.join(EXPORT_PATH, subsample_name)
         subsample_df.to_csv(export_file_path, index=False)
-        print(f"Saved subsample: {export_file_path}")
-
+        
+        # Calculate total time delta for the subsample
+        total_time_delta = end_times[subsample_idx] - start_times[subsample_idx] if start_times[subsample_idx] and end_times[subsample_idx] else timedelta(0)
+        print(f"Saved subsample: {subsample_name} with {scan_counts[subsample_idx]} scan(s) and total time delta of {total_time_delta}.")
 
 if __name__ == "__main__":
     main()
