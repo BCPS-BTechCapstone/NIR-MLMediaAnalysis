@@ -1,75 +1,87 @@
-# Software Setup
 
-## Python Environment
+# Setup Instructions: Anaconda and Environment Creation
 
-### Python Installation
+## Prerequisites
 
-The python installation version can be verified using:
+Before starting, ensure that you have access to the internet and administrative privileges on your computer.
 
-```bash
-python3 --version
-```
+## Step 1: Install Anaconda
 
-Python can be updated or be installed if required using:
+Follow the instructions below based on your operating system to install Anaconda.
 
-```bash
-sudo apt-get update
-sudo apt-get install python3.10
-```
+### Windows
 
-Pip and Venv can then be installed using the following commands:
+1. Download the Anaconda installer for Windows from the official website: [Anaconda Windows Installer](https://www.anaconda.com/products/individual).
+2. Run the downloaded installer and follow the prompts to complete the installation.
+   - Ensure that you check the option to **Add Anaconda to the PATH environment variable** (optional but recommended).
+   - Install for "Just Me" unless you require a system-wide installation.
+3. Once the installation is complete, open the **Anaconda Prompt** from the Start menu.
 
-```bash
-sudo apt install python3-pip
-sudo apt install python3.10-venv
-```
+### macOS and Linux
 
-### Create Virtual Environment
+1. Download the Anaconda installer for macOS or Linux from the official website: [Anaconda macOS/Linux Installer](https://www.anaconda.com/products/individual).
+2. Open a terminal and run the following command (replace `filename` with the name of the downloaded installer):
 
-The python environment is not included within the repository. A virtual environment can be created within the Linux terminal with:
+   ```bash
+   bash ~/Downloads/filename.sh
+   ```
 
-```bash
-python3 -m venv /path/to/virtual/environment
-```
+3. Follow the prompts to complete the installation.
+4. After installation, initialize Conda by running:
 
-Here is an example when in the current directory:
+   ```bash
+   conda init
+   ```
 
-```bash
-python3 -m venv .venv
-```
+5. Close and reopen your terminal to activate Conda.
 
-The python virtual environment and `.venv` folder has been created within the target directory.
+## Step 2: Create a New Environment from `NIRenv.yml`
 
-### Activate/Deactivate Environment
+Once Anaconda is installed, you can create a new environment using the provided `NIRenv.yml` file.
 
-The virtual environmnent can be activated in the Linux terminal using:
+1. Place the `NIRenv.yml` file in a directory of your choice.
+2. Open the **Anaconda Prompt** (Windows) or your terminal (macOS/Linux).
+3. Navigate to the directory containing the `NIRenv.yml` file. For example:
 
-```bash
-source .venv/bin/activate
-```
+   ```bash
+   cd path/to/your/directory
+   ```
 
-The when the virtual environment is activated, the filepath can be checked using:
+4. Run the following command to create the environment:
 
-```bash
-which python 
-```
+   ```bash
+   conda env create -f NIRenv.yml
+   ```
 
-To leave/deactivate the virtual environment, use this command within the terminal:
+   This will create a new Conda environment with the settings and packages specified in the `NIRenv.yml` file.
 
-```bash
-deactivate
-```
+5. Once the environment is created, activate it by running:
 
-### Package Requirements
+   ```bash
+   conda activate NIRenv
+   ```
 
-The list of all required python packages are within the `requirements.txt` file. Before downloading packages, ensure that the virtual environment is active, or the packages will be installed to the normal python environment. The packages can be downloaded using:
+## Step 3: Verify the Environment
 
-```bash
-pip install -r requirements.txt
-```
-
-If contributing to the software and additional packages are used, the following command can be used to `freeze` all dependancies to the `requirements.txt` file.
+To ensure the environment is set up correctly, you can check the installed packages by running:
 
 ```bash
-pip freeze > requirements.txt
+conda list
 ```
+
+This will display the list of packages installed in the `NIRenv` environment.
+
+## Troubleshooting
+
+- **"conda command not found"**: If you encounter this issue, ensure that Anaconda is added to your system’s PATH variable or try running `conda init` again.
+- **Missing dependencies**: If some dependencies are not installed correctly, try updating Conda and recreating the environment:
+
+  ```bash
+  conda update conda
+  conda env create -f NIRenv.yml --force
+  ```
+
+## Additional Information
+
+- [Anaconda Documentation](https://docs.anaconda.com/)
+- [Conda Documentation](https://docs.conda.io/)
