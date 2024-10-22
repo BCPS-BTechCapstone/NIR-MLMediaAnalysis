@@ -25,3 +25,13 @@ Capstone Project for 4TR1 & 4TR3
 ## Purpose
 
 Implement  NIR spectroscopy and machine learning for the detection and real-time analysis of media within cultures for continuous quality testing
+
+## Overview
+
+### Data Collection
+
+### Training Data
+
+#### Data Augmentation
+
+Due to the limited time that was available for data collection, the datasets for each scan were augmented based temporal subsampling. This allowed a larger training dataset based on limited collection time. While not optimal, it should still allow for proof of concept.
