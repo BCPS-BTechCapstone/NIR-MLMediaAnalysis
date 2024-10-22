@@ -20,16 +20,6 @@
 
 ### NIR Software Setup
 
-#### Setting Scan Reference
-
-1) Turn on "Keep Lamp On"
-2) Wait 5 minutes
-3) Select `New` under Scan Reference Select
-4) Place the Quartz Cell into the enclosure
-5) Perform a scan
-6) The Scan Reference Select will automatically change to `Previous`
-7) The reference has now been set
-
 #### Scan Parameters
 
 Method: `4TR1 BCPS Def`
@@ -37,8 +27,8 @@ Method: `4TR1 BCPS Def`
 Filename Prefix: `Sample<num><type>_` (i.e. Sample3 or Sample3C)\
 Folder: Folder with the same name as the Sample within 4TR3
 
-Back-to-Back: `576`\
-Scan Delay (s): `300`
+Back-to-Back: `2520`\
+Scan Delay (s): `60`
 
 ### Starting the Scanning Process
 
