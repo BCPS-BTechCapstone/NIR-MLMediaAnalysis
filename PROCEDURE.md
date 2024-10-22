@@ -50,4 +50,3 @@ Scan Delay (s): `300`
 6) Make sure all of the settings are correct within the software
 7) Click "Scan" to start the scanning process
 8) Ensure that the laptop is plugged in, then close the lid
-
