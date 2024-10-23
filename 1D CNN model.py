@@ -14,7 +14,7 @@ import pandas as pd
 # Assuming each timepoint is a CSV file and each folder represents a sample run
 
 # Directory containing all sample runs
-base_dir = 'path/to/your/data'
+base_dir = 'Datasets'
 
 # Lists to hold data and labels
 X_data = []
