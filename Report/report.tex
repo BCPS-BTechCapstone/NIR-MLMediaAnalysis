@@ -61,23 +61,23 @@ Bioprocess Monitoring \sep Machine Learning \sep Near-Infared Spectroscopy (NIR)
 % Introduction
 \section{Introduction}
 Quality assurance issues are responsible for repeated testing, misdiagnosis, improper treatment and unpredictable costs \citep{randox_quality}. The contamination of samples is the most common problem experienced in microbial laboratories. The real-time monitoring of samples can represent a significant cost-saving solution to improve quality assurance practices in laboratory and industrial settings \citep{abatenh2018contamination}. To improve these issues, Near Infrared (NIR) spectroscopy has been combined with deep learning to provide real-time analysis of sample quality. This online analysis increases the testing and result obtention speed while remaining non-invasive to reduce further contamination of the samples \citep{sohn2021gmo}. This technology also symbolizes a financial advantage by reducing the loss of biological samples using low computational requirements that can measure and classify the analyzed data as required. A deep learning model will be used to optimize this analysis as it offers advantages such as automatically integrating feature extraction, and incorporating hundreds of layers with many parameters compared to artificial neural networks \citep{mishra2022hypes}.
-The NIR spectral region has a range from 700 nm to 2500 nm. It is primarily characterized by absorption bands corresponding to the overtone and combination bands of C-H, N-H, O-H, and S-H stretching Figure \ref{fig:analytical_bands}. Hence, the spectra of most compounds will show unique absorption peaks in the NIR spectral region. These peaks can be used for the quantitative and qualitative analysis of the compounds in gases, solids or liquids.
+The NIR spectral region has a range from 700 nm to 2500 nm. It is primarily characterized by absorption bands corresponding to the overtone and combination bands of C-H, N-H, O-H, and S-H stretching Fig.\ref{fig:analytical_bands}. Hence, the spectra of most compounds will show unique absorption peaks in the NIR spectral region. These peaks can be used for the quantitative and qualitative analysis of the compounds in gases, solids or liquids.
 
-        \begin{figure}[h]
-                \centering
-                \includegraphics[width=0.5\textwidth]{Images/principle_analytical_bands.png}
-                \caption{Principal analytical bands and relative peak locations for absorptions in the near-infrared region. Unique absorptions found in the majority of chemical and biological products can be utilized in both qualitative and quantitative examinations}
-                \label{fig:analytical_bands}
-                \end{figure}
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/principle_analytical_bands.png}
+        \caption{Principal analytical bands and relative peak locations for absorptions in the near-infrared region. Unique absorptions found in the majority of chemical and biological products can be utilized in both qualitative and quantitative examinations}
+        \label{fig:analytical_bands}
+        \end{figure}
 
 Ethanol and water have characteristic NIR spectrum patterns that allow for their identification and quantification. Ethanol has a unique narrow peak at 1200 nm representing the second overtone of the C-H stretching vibration \citep{antonpaar_nir}. Water, on the other hand, shows a flat behaviour at this wavelength due to the lack of C-H bonds.
 
-        \begin{figure}[h]
-                \centering
-                \includegraphics[width=0.5\textwidth]{Images/anton_paar.png}
-                \caption{NIR spectrum of ethanol and water \citep{antonpaar_nir}}
-                \label{fig:ethanol-water_curve}
-                \end{figure}
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/anton_paar.png}
+        \caption{NIR spectrum of ethanol and water \citep{antonpaar_nir}}
+        \label{fig:ethanol-water_curve}
+        \end{figure}
 
 The intensity of NIR absorption bands is 10–100 times lower than that of the equivalent basic mid-IR absorption bands. This facilitates the direct analysis of strong absorbances and high light-scattering efficiency. Band overlap and penetration depth reduce in the near-infrared (NIR) spectral region, whereas the efficiency of light scattering and absorptivity improves with wavelength. As NIR spectroscopy depends on light absorption, spectral data can be acquired either in transmittance or reflectance mode. Diffuse reflectance $(\log(\frac{1}{R}))$ measurements are favored for opaque or light-scattering matrices whereas translucent samples used transmittance $(\log(\frac{1}{R}))$.
 NIR spectroscopy's quickness, adaptability to a variety of materials, and capacity to examine liquid samples make it a promising tool for bio applications \citep{becInfraredSpectroscopyBioApplications2020}. Recent advancements are making NIR spectroscopy more accessible with portable handheld instruments that allow for real-time, on-site examination. 
@@ -120,26 +120,28 @@ The housing underwent multiple iterations with all design and modeling performed
 
 \begin{figure}[ht]
         \centering
-        \begin{subfigure}[b]{0.45\textwidth}
-            \centering
-            \includegraphics[width=\textwidth]{Images/nir_exploded.png}  % Replace with your image file
-            \caption{NIR Housing Exploxed}
-            \label{fig:subfigure1}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.42\textwidth}
             \centering
             \includegraphics[width=\textwidth]{Images/nir_housing.png}  % Replace with your image file
-            \caption{NIR Housing Un-Exploded}
-            \label{fig:subfigure2}
+            \caption{NIR Housing}
+            \label{fig:nir_subfig1}
         \end{subfigure}
-        \caption{Combined Images as Subfigures}
-        \label{fig:combinedfigures}
+        \hfill
+        \begin{subfigure}[b]{0.54\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{Images/nir_exploded.png}  % Replace with your image file
+            \caption{NIR Housing Fully-Exploded}
+            \label{fig:nir_subfig2}
+        \end{subfigure}
+        \caption{NIR Housing Design}
+        \label{fig:nir_housing}
     \end{figure}
 
-
 \subsection{Methods}
-Methods
+\subsubsection{Ethanol Standard Curves}
+To confirm the proof of concept of the project, ethanol standard curves were created and detected using the NIR to determine the differences in signals between different concentrations of ethanol. 5-6 solutions of varying ethanol concentrations were tested in two stages, at higher concentrations and low concentrations. For the first standard curve, 300 mL of distilled water was retained in a large beaker. 5 100mL beakers were set up and labeled according to the scheme in Figure 2.3.1. These volumes were added to each beaker and 3 mL were subsequently taken out and placed into a plastic cuvette. The cuvette was cleaned with a kimwipe and then placed in the NIR to take a reading. The process was repeated for all beakers 3 times to generate 3 replicates for each sample. The concentrations used were far enough so it would make it easier to tell a difference between the absorbance readings taken from the NIR.
+
+For the second curve, smaller concentrations of ethanol were used to see if the NIR was able to detect small differences in concentrations of ethanol. The process was similar to the first standard curve. In this case, 600 mL of distilled water was retrieved in a beaker and 6 100 mL beakers were set up and labeled according to the scheme in Figure 2.3.2. The remainder of the process was the same as before with the labeled volumes being added to each beaker and 3 mL extracted to be placed in a plastic cuvette. The NIR spectra was taken and the process was repeated 3 times to generate 3 replicates. 
 
 \section{Results}
 Results

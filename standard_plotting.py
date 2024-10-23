@@ -22,6 +22,7 @@ BLANKS_FOLDER_PATH = 'Blanks'
 # Function to normalize the absorbance based on the PGA gain
 def normalize_by_pga(df, pga_gain):
     normalization_factor = pga_gain / TARGET_PGA_GAIN
+    print(df.head())
     df[Y_AXIS] = df[Y_AXIS] * normalization_factor
     return df
 
