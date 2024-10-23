@@ -19,8 +19,10 @@ Dr. Amin R. Rajabzadeh
 
 ### Association
 
-McMaster Univeristy - W Booth School of Engineering Practice and Technology\
+Bachelor of Technology in Bioinformatics:\
 Capstone Project for 4TR1 & 4TR3
+
+McMaster Univeristy - W. Booth School of Engineering Practice and Technology
 
 ## Purpose
 
