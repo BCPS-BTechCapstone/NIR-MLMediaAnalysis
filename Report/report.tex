@@ -5,7 +5,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{subcaption}
@@ -25,6 +24,8 @@
         stringstyle=\color{red}, % Strings in red
         showstringspaces=false, % Don't show spaces in strings
         breaklines=true} % Line breaking
+
+\usepackage[hidelinks]{hyperref}
 
 % Begin document
 \begin{document}
@@ -61,8 +62,7 @@ Bioprocess Monitoring \sep Machine Learning \sep Near-Infared Spectroscopy (NIR)
 % Introduction
 \section{Introduction}
 Quality assurance issues are responsible for repeated testing, misdiagnosis, improper treatment and unpredictable costs \citep{randox_quality}. The contamination of samples is the most common problem experienced in microbial laboratories. The real-time monitoring of samples can represent a significant cost-saving solution to improve quality assurance practices in laboratory and industrial settings \citep{abatenh2018contamination}. To improve these issues, Near Infrared (NIR) spectroscopy has been combined with deep learning to provide real-time analysis of sample quality. This online analysis increases the testing and result obtention speed while remaining non-invasive to reduce further contamination of the samples \citep{sohn2021gmo}. This technology also symbolizes a financial advantage by reducing the loss of biological samples using low computational requirements that can measure and classify the analyzed data as required. A deep learning model will be used to optimize this analysis as it offers advantages such as automatically integrating feature extraction, and incorporating hundreds of layers with many parameters compared to artificial neural networks \citep{mishra2022hypes}.
-The NIR spectral region has a range from 700 nm to 2500 nm. It is primarily characterized by absorption bands corresponding to the overtone and combination bands of C-H, N-H, O-H, and S-H stretching Fig.\ref{fig:analytical_bands}. Hence, the spectra of most compounds will show unique absorption peaks in the NIR spectral region. These peaks can be used for the quantitative and qualitative analysis of the compounds in gases, solids or liquids.
-
+The NIR spectral region has a range from 700 nm to 2500 nm. It is primarily characterized by absorption bands corresponding to the overtone and combination bands of C-H, N-H, O-H, and S-H stretching \autoref{fig:analytical_bands}. Hence, the spectra of most compounds will show unique absorption peaks in the NIR spectral region. These peaks can be used for the quantitative and qualitative analysis of the compounds in gases, solids or liquids.
 \begin{figure}[h]
         \centering
         \includegraphics[width=0.5\textwidth]{Images/principle_analytical_bands.png}
@@ -76,7 +76,7 @@ Ethanol and water have characteristic NIR spectrum patterns that allow for their
         \centering
         \includegraphics[width=0.5\textwidth]{Images/anton_paar.png}
         \caption{NIR spectrum of ethanol and water \citep{antonpaar_nir}}
-        \label{fig:ethanol-water_curve}
+        \label{fig:ethanol_water_curve}
         \end{figure}
 
 The intensity of NIR absorption bands is 10–100 times lower than that of the equivalent basic mid-IR absorption bands. This facilitates the direct analysis of strong absorbances and high light-scattering efficiency. Band overlap and penetration depth reduce in the near-infrared (NIR) spectral region, whereas the efficiency of light scattering and absorptivity improves with wavelength. As NIR spectroscopy depends on light absorption, spectral data can be acquired either in transmittance or reflectance mode. Diffuse reflectance $(\log(\frac{1}{R}))$ measurements are favored for opaque or light-scattering matrices whereas translucent samples used transmittance $(\log(\frac{1}{R}))$.
