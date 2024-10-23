@@ -1,52 +1,70 @@
 import numpy as np
-import tensorflow as tf
 import matplotlib.pyplot as plt
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten, Dense, Dropout
-from tensorflow.keras.callbacks import ModelCheckpoint
-from sklearn.model_selection import KFold
+from keras.models import Sequential
+from keras.layers import Conv1D, MaxPooling1D, Flatten, Dense, Dropout
+from keras.callbacks import ModelCheckpoint
+from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
 import os
 import pandas as pd
 
 # Load the NIR data from CSV files
-# Assuming each timepoint is a CSV file and each folder represents a sample run
+# Assuming each CSV file contains all the timepoints for that run
 
 # Directory containing all sample runs
-base_dir = 'Datasets'
+base_dir = './Datasets'
+
+print(f"Checking directory: {base_dir}")
+if not os.path.exists(base_dir):
+    raise ValueError(f"The directory {base_dir} does not exist.")
 
 # Lists to hold data and labels
 X_data = []
 Y_data = []
 
-# Loop through each run folder
+print("Listing folders in the base directory:")
 for folder_name in os.listdir(base_dir):
-    folder_path = os.path.join(base_dir, folder_name)
-    if os.path.isdir(folder_path):
-        # Collect timepoint data for this run
-        time_series_data = []
-        for csv_file in sorted(os.listdir(folder_path)):
-            if csv_file.endswith('.csv'):
-                csv_path = os.path.join(folder_path, csv_file)
-                # Load CSV and append to time_series_data list
-                df = pd.read_csv(csv_path)
-                time_series_data.append(df.values)
-        
-        # Stack the timepoints into a single NumPy array for this run
-        time_series_array = np.stack(time_series_data, axis=0)  # Shape: (num_time_steps, num_features)
-        
-        # Assign label based on folder name
-        if 'sample' in folder_name.lower():
-            if '_1' in folder_name.lower() or '_2' in folder_name.lower() or '_3' in folder_name.lower():
-                X_data.append(time_series_array)
-                Y_data.append(0)  # Non-contaminated (augmented data)
+    print(f"Found folder: {folder_name}")
+
+# Loop through each CSV file in the base directory
+for csv_file in os.listdir(base_dir):
+    if csv_file.endswith('.csv'):
+        csv_path = os.path.join(base_dir, csv_file)
+        print(f"Loading file: {csv_path}")
+
+        # Load the CSV and append to data list
+        df = pd.read_csv(csv_path)
+        time_series_array = df.values  # Assuming the data in the CSV is correctly structured as (num_time_steps, num_features)
+
+        X_data.append(time_series_array)
+
+        # Assign label based on file name
+        if '_1' in csv_file.lower() or '_2' in csv_file.lower() or '_3' in csv_file.lower():
+            Y_data.append(0)  # Non-contaminated (augmented data)
+
+# Determine the maximum timepoints and features
+max_timepoints = max([x.shape[0] for x in X_data])
+max_features = max([x.shape[1] for x in X_data])
+
+# Pad each sample to have the same number of timepoints and features
+X_padded = []
+for x in X_data:
+    padded = np.zeros((max_timepoints, max_features))
+    padded[:x.shape[0], :x.shape[1]] = x
+    X_padded.append(padded)
 
 # Convert lists to NumPy arrays
-X = np.array(X_data)  # Shape: (num_samples, num_time_steps, num_features)
+if len(X_padded) == 0:
+    raise ValueError("No data found. Please ensure the base directory contains correctly named folders and CSV files.")
+
+X = np.array(X_padded)  # Shape: (num_samples, max_timepoints, max_features)
 Y = np.array(Y_data)  # Shape: (num_samples,)
 
 # Preprocessing the data
+if X.size == 0:
+    raise ValueError("The dataset is empty. Please check the data loading process.")
+
 scaler = MinMaxScaler()
 X = scaler.fit_transform(X.reshape(-1, X.shape[-1])).reshape(X.shape)
 
@@ -65,14 +83,18 @@ def create_model(input_shape):
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return model
 
+# Check data balance
+print(f"Number of non-contaminated samples: {np.sum(Y == 0)}")
+print(f"Number of contaminated samples: {np.sum(Y == 1)}")
+
 # K-Fold Cross-Validation
-kf = KFold(n_splits=3, shuffle=True, random_state=42)
+kf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 fold = 1
 
 best_checkpoint = ModelCheckpoint('best_model_overall.keras', monitor='val_loss', save_best_only=True, verbose=1)
 
 val_accuracies = []
-for train_index, val_index in kf.split(X):
+for train_index, val_index in kf.split(X, Y):
     print(f'Training on Fold {fold}...')
     
     X_train, X_val = X[train_index], X[val_index]
@@ -114,15 +136,11 @@ plt.show()
 model = create_model(input_shape=(X.shape[1], X.shape[2]))
 model.fit(X, Y, epochs=50, batch_size=16, callbacks=[best_checkpoint])
 
-# Evaluate the model on the entire dataset (or use a held-out test set)
-loss, accuracy = model.evaluate(X, Y)
-print(f'Test Accuracy: {accuracy * 100:.2f}%')
-
 # Predict on the entire dataset (or use a held-out test set)
 Y_pred = (model.predict(X) > 0.5).astype('int32')
 
 # Plot confusion matrix
-cm = confusion_matrix(Y, Y_pred)
+cm = confusion_matrix(Y, Y_pred, labels=[0, 1])
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Non-Contaminated', 'Contaminated'])
 disp.plot(cmap=plt.cm.Blues)
 plt.title('Confusion Matrix')
@@ -142,5 +160,3 @@ plt.ylabel('True Positive Rate')
 plt.title('Receiver Operating Characteristic (ROC) Curve')
 plt.legend(loc='lower right')
 plt.show()
-
-
