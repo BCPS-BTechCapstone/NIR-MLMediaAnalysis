@@ -8,10 +8,9 @@
 % \usepackage{hyperref}
 \usepackage{multicol}
 \usepackage{listings} % For code
-% \usepackage{caption} % For image captions
-% \usepackage{subcaption} % For subfigures
-% \usepackage{pgfplots} % For creating plots
-% \pgfplotsset{compat=newest} % Ensure compatibility with recent versions
+
+\usepackage[numbers]{natbib}
+\bibliographystyle{plainnat}
 
 % Python code style settings
 \lstset{language=Python, % Setting Python as the language
@@ -55,7 +54,7 @@ Bioprocess Monitoring \sep Machine Learning \sep Near-Infared Spectroscopy (NIR)
 
 % Introduction
 \section{Introduction}
-Introduction
+Introduction things \citep{AlamarBlueCellViability}
 
 \section{Materials and Methods}
 \subsection{Materials}
@@ -79,15 +78,8 @@ Conclusion
 \section*{Acknowledgments}
 Acknowledge any individuals or organizations that contributed to the research, funding bodies, and any supporting institutions.
 
-
-% \section*{References}
-\bibliographystyle{vancouver}
-% \bibliography{references}
-
-% Appendices (if any)
-% \appendix
-% \section{Additional Figures}
-% Include any supplementary figures or data here.
+\newpage
+\bibliography{references}     % The .bib file name (without the .bib extension)
 
 % End document
 \end{document}
