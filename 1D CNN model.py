@@ -6,6 +6,7 @@ from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten, Dense, Dropou
 from tensorflow.keras.callbacks import ModelCheckpoint
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
 import os
 import pandas as pd
 
@@ -18,8 +19,6 @@ base_dir = 'path/to/your/data'
 # Lists to hold data and labels
 X_data = []
 Y_data = []
-X_test_data = []
-Y_test_data = []
 
 # Loop through each run folder
 for folder_name in os.listdir(base_dir):
@@ -42,22 +41,14 @@ for folder_name in os.listdir(base_dir):
             if '_1' in folder_name.lower() or '_2' in folder_name.lower() or '_3' in folder_name.lower():
                 X_data.append(time_series_array)
                 Y_data.append(0)  # Non-contaminated (augmented data)
-            else:
-                # Apply temporal sub-sampling to contaminated data (e.g., take every 2nd timepoint)
-                sub_sampled_array = time_series_array[::2]  # Fixed sub-sampling by taking every 2nd timepoint
-                X_test_data.append(sub_sampled_array)
-                Y_test_data.append(1)  # Contaminated
 
 # Convert lists to NumPy arrays
 X = np.array(X_data)  # Shape: (num_samples, num_time_steps, num_features)
 Y = np.array(Y_data)  # Shape: (num_samples,)
-X_test = np.array(X_test_data)  # Shape: (num_test_samples, num_time_steps, num_features)
-Y_test = np.array(Y_test_data)  # Shape: (num_test_samples,)
 
 # Preprocessing the data
 scaler = MinMaxScaler()
 X = scaler.fit_transform(X.reshape(-1, X.shape[-1])).reshape(X.shape)
-X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(X_test.shape)
 
 # Define 1D CNN model function
 def create_model(input_shape):
@@ -78,6 +69,9 @@ def create_model(input_shape):
 kf = KFold(n_splits=3, shuffle=True, random_state=42)
 fold = 1
 
+best_checkpoint = ModelCheckpoint('best_model_overall.keras', monitor='val_loss', save_best_only=True, verbose=1)
+
+val_accuracies = []
 for train_index, val_index in kf.split(X):
     print(f'Training on Fold {fold}...')
     
@@ -87,24 +81,66 @@ for train_index, val_index in kf.split(X):
     # Create a new instance of the model
     model = create_model(input_shape=(X_train.shape[1], X_train.shape[2]))
     
-    # Define a checkpoint to save the best model for this fold
-    checkpoint = ModelCheckpoint(f'best_model_fold_{fold}.keras', monitor='val_loss', save_best_only=True, verbose=1)
-    
     # Train the model
-    history = model.fit(X_train, Y_train, epochs=50, batch_size=16, validation_data=(X_val, Y_val), callbacks=[checkpoint])
+    history = model.fit(X_train, Y_train, epochs=50, batch_size=16, validation_data=(X_val, Y_val), callbacks=[best_checkpoint])
     
-    # Plot validation loss over training epochs for this fold
+    # Plot validation loss and accuracy over training epochs for this fold
     plt.plot(history.history['val_loss'], label=f'Validation Loss Fold {fold}')
+    plt.plot(history.history['val_accuracy'], label=f'Validation Accuracy Fold {fold}')
+    
+    # Record validation accuracy for each fold
+    val_accuracy = history.history['val_accuracy'][-1]
+    val_accuracies.append(val_accuracy)
+    
     fold += 1
 
-# Show the validation loss plot
+# Show validation loss and accuracy plot
 plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.title('Validation Loss Over Epochs for Each Fold')
+plt.ylabel('Metrics')
+plt.title('Validation Loss and Accuracy Over Epochs for Each Fold')
 plt.legend()
 plt.show()
 
-# Evaluate the model on test data
-loss, accuracy = model.evaluate(X_test, Y_test)
+# Show validation accuracy for each fold
+plt.figure()
+plt.plot(range(1, len(val_accuracies) + 1), val_accuracies, marker='o', linestyle='-', label='Validation Accuracy per Fold')
+plt.xlabel('Fold Number')
+plt.ylabel('Accuracy')
+plt.title('Validation Accuracy per Fold')
+plt.legend()
+plt.show()
+
+# Assuming final model is trained on the entire dataset for evaluation purposes
+model = create_model(input_shape=(X.shape[1], X.shape[2]))
+model.fit(X, Y, epochs=50, batch_size=16, callbacks=[best_checkpoint])
+
+# Evaluate the model on the entire dataset (or use a held-out test set)
+loss, accuracy = model.evaluate(X, Y)
 print(f'Test Accuracy: {accuracy * 100:.2f}%')
+
+# Predict on the entire dataset (or use a held-out test set)
+Y_pred = (model.predict(X) > 0.5).astype('int32')
+
+# Plot confusion matrix
+cm = confusion_matrix(Y, Y_pred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Non-Contaminated', 'Contaminated'])
+disp.plot(cmap=plt.cm.Blues)
+plt.title('Confusion Matrix')
+plt.show()
+
+# Compute ROC curve and AUC
+Y_prob = model.predict(X).ravel()
+fpr, tpr, _ = roc_curve(Y, Y_prob)
+roc_auc = auc(fpr, tpr)
+
+# Plot ROC curve
+plt.figure()
+plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC Curve (area = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curve')
+plt.legend(loc='lower right')
+plt.show()
+
 
