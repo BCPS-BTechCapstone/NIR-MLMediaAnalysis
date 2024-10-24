@@ -1,4 +1,4 @@
-\documentclass[preprint, 3p, 11pt]{elsarticle}
+\documentclass[final, 3p, 11pt]{elsarticle}
 
 % Packages
 \usepackage{lmodern}
@@ -19,13 +19,13 @@
 \setlength{\parindent}{0pt}
 
 % Python code style settings
-\lstset{language=Python, % Setting Python as the language
-        basicstyle=\ttfamily\small, % Basic font style
-        keywordstyle=\color{blue}, % Keywords in blue
-        commentstyle=\color{green!50!black}, % Comments in green
-        stringstyle=\color{red}, % Strings in red
-        showstringspaces=false, % Don't show spaces in strings
-        breaklines=true} % Line breaking
+\lstset{
+  basicstyle=\ttfamily\footnotesize,  % Code font
+  numbers=left,                       % Line numbers
+  numberstyle=\tiny,                  % Line number style
+  numbersep=5pt,                      % Line number spacing
+  language=Python,                    % Python syntax highlighting
+}
 
 \usepackage[hidelinks]{hyperref}
 
@@ -230,8 +230,6 @@ A laptop running Windows was used in conjunction with the DLP NIRscan Nano GUI s
 
 The lamp of the NIR is first toggled on to warm it up and equalize the NIR. This is left on until the scanning sequence is ready to start. A blank sample of an empty cuvette is first taken to replace the factory background of the NIR. The sample is then loaded into the holder. The software is then set to take 196 scans every 900 seconds which equates to a single scan every 15 minutes for a total of 48 hours. The lamp is then turned off, and the first scan is then taken before leaving the apparatus. 
 
-
-
 \section{Results}
 Results
 
@@ -249,6 +247,7 @@ Acknowledge any individuals or organizations that contributed to the research, f
 
 \newpage
 \bibliography{references}     % The .bib file name (without the .bib extension)
+
 
 % End document
 \end{document}
