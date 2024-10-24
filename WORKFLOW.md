@@ -93,6 +93,29 @@ Just for safety, always make sure you are in the right branch before pushing.
 
 **Never push to origin/main without permission**
 
+### Pull Requests
+
+Once you are ready to merge your changes into the main branch, create a pull request (PR):
+
+- Go to the GitHub repository in your browser.
+- You will see an option to create a pull request for the branch you have pushed.
+- Click on New Pull Request, select the base branch (typically main) and the compare branch (your feature branch).
+- Provide a descriptive title and description of the changes.
+- Request reviews from team members.
+
+#### Code Review
+
+- Team members should review the pull request:
+- Click on the Files changed tab to view the changes.
+- Provide comments for any necessary changes or approve the pull request if everything looks good.
+
+#### Merging Changes
+
+After receiving approval:
+
+- Click on Merge pull request to merge your changes into the main branch.
+- Delete the branch once it is merged to keep the repository clean.
+
 ### Keeping the Local Repositories Updated
 
 #### Update Local Branch from Origin
