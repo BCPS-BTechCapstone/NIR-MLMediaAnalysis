@@ -57,6 +57,8 @@ git branch <branch> # Create branch with name: branch_name
 git checkout <branch> # Switch to branch
 ```
 
+Branch naming convention should follow: `<feature>/<branch>`
+
 ```bash
 git checkout -b <branch> # Create Branch and Checkout
 git checkout -b <new_branch_name> origin/<remote_branch_name> # Create Branch based on remote and Checkout
@@ -88,6 +90,8 @@ git push # Pushes commits from current branch up to remote
 ```
 
 Just for safety, always make sure you are in the right branch before pushing.
+
+**Never push to origin/main without permission**
 
 ### Keeping the Local Repositories Updated
 
