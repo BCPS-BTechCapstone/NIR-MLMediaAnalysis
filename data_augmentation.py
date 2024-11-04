@@ -117,6 +117,23 @@ def main():
     # Delete existing subsample files before exporting new ones
     delete_existing_subsample_files(SAMPLE_NAME, EXPORT_PATH, AUTO_CONFIRM)
 
+    # If NUM_SUBSAMPLES is 0, combine all data into one file without augmentation
+    if NUM_SUBSAMPLES == 0:
+        combined_df = None
+        for file in files:
+            file_path = os.path.join(FOLDER_PATH, file)
+            df = pd.read_csv(file_path, skiprows=21)
+            if combined_df is None:
+                combined_df = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
+                combined_df.rename(columns={'Absorbance (AU)': f'Absorbance (AU) {extract_sample_info(file)[3]}'}, inplace=True)
+            else:
+                combined_df[f'Absorbance (AU) {extract_sample_info(file)[3]}'] = df['Absorbance (AU)'].values
+        
+        export_file_path = os.path.join(EXPORT_PATH, f"{SAMPLE_NAME}.csv")
+        combined_df.to_csv(export_file_path, index=False)
+        print(f"Exported combined original data without augmentation: {export_file_path}")
+        return
+
     # Sort files by timestamp in the filename
     files = sorted(files, key=lambda x: datetime.strptime(x.replace('.csv', '').split('_')[4], '%H%M%S'))
 
@@ -164,7 +181,6 @@ def main():
         # Calculate total time delta for the subsample
         total_time_delta = end_times[subsample_idx] - start_times[subsample_idx] if start_times[subsample_idx] and end_times[subsample_idx] else timedelta(0)
         print(f"Saved subsample: {subsample_name} with {scan_counts[subsample_idx]} scan(s) and total time delta of {total_time_delta}.")
-
 
 if __name__ == "__main__":
     main()
