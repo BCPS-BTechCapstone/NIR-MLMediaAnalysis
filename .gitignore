@@ -1,8 +1,14 @@
+# Data Files
+*.dat
+*.csv
+*.lnk
+*.png
+
 # Exceptions
 !Ethanol_Standard.png
 !Ethanol-Plastic_Standard.png
-!/Plots/*.png
-!/Datasets/*.csv
+!Plots/*.png
+!Datasets/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -11,12 +17,6 @@ __pycache__/
 
 # C extensions
 *.so
-
-# Data Files
-*.dat
-*.csv
-*.lnk
-*.png
 
 # Distribution / packaging
 .Python
