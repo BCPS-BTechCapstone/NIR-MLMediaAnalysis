@@ -33,8 +33,10 @@ def main(args):
         base_filename = os.path.basename(subsample_path).replace('.csv', '_3d_plot.png')
         output_filename = os.path.join(plots_dir, base_filename)
 
+        elev, azim = map(float, [angle.strip() for angle in args.angles.split(',')])
+
         # Call the plot_data function for each subsample
-        plot_data(data, output_filename)
+        plot_data(data, output_filename, elev, azim, args.view)
 
 if __name__ == "__main__":
     # Setup argparse
@@ -57,6 +59,9 @@ if __name__ == "__main__":
     parser.add_argument('-e', '--export_path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
+
+    parser.add_argument('-a', '--angles', type=str, default='0,-90', help='Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: "0,-90" , recommended: "5,-140")')
+    parser.add_argument('-v', '--view', action='store_true', help='Show the plot instead of saving it')
 
     args = parser.parse_args()
     main(args)

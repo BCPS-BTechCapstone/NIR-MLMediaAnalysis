@@ -76,7 +76,7 @@ def main(args):
     AUTO_CONFIRM = args.yes
 
     # Get the absolute paths relative to the script directory
-    FOLDER_PATH = os.path.join(args.folder_path)
+    FOLDER_PATH = os.path.join(args.folder_path, SAMPLE_NAME)
     EXPORT_PATH = os.path.join(args.export_path)
 
     if not os.path.exists(EXPORT_PATH):
@@ -186,7 +186,7 @@ if __name__ == "__main__":
                         help='Initial time delta between scans in seconds (default: 60)')
     parser.add_argument('-d', '--append_delta', type=int, default=900,
                         help='Time delta for appending in seconds after the first split (default: 900)')
-    parser.add_argument('-p', '--folder_path', type=str, default='Raw_Data',
+    parser.add_argument('-f', '--folder_path', type=str, default='Raw_Data',
                         help='Relative path to the folder containing the files (default: Raw_Data)')
     parser.add_argument('-e', '--export_path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')

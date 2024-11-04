@@ -10,7 +10,7 @@ import matplotlib.colors as mcolors
 import os
 import argparse
 
-def plot_data(data, output_filename):
+def plot_data(data, output_filename, elev, azim, show_plot):
     # Set seaborn theme
     sns.set_theme(style="whitegrid")
 
@@ -40,7 +40,7 @@ def plot_data(data, output_filename):
     Z = np.array(time_deltas)
 
     # Normalizing the color map
-    norm = mcolors.Normalize(vmin=min(Z), vmax(max(Z)))
+    norm = mcolors.Normalize(vmin=min(Z), vmax=max(Z))
     cmap = cm.viridis
 
     # Loop to ensure dimensions match for plotting
@@ -53,35 +53,43 @@ def plot_data(data, output_filename):
     ax.set_xlabel('Wavelength (nm)', labelpad=10)
     ax.set_ylabel('Time (min)', labelpad=10)
     ax.set_zlabel('Absorbance (AU)', labelpad=10)
-    ax.view_init(elev=0, azim=-90)  # Set initial view so that time axis is prominent and labels appear on the right
+    ax.view_init(elev=elev, azim=azim)  # Set initial view using arguments for elev and azim
 
     # Add color bar to indicate time progression
     mappable = cm.ScalarMappable(norm=norm, cmap=cmap)
     mappable.set_array([])
     fig.colorbar(mappable, ax=ax, fraction=0.02, pad=0.1, label='Time (min)')
 
-    # Save the plot to the output directory
-    plt.savefig(output_filename, dpi=600)
-    plt.close()
-    print(f"Plot saved to {output_filename}")
-
+    # Show or save the plot based on the argument
+    if show_plot:
+        plt.show()
+    else:
+        plt.savefig(output_filename, dpi=600)
+        plt.close()
+        print(f"Plot saved to {output_filename}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Plotting Script for 3D Visualization of Absorbance Data")
     parser.add_argument('input_file', type=str, help='Path to the input CSV file (e.g., "Sample1.csv")')
     parser.add_argument('--output_dir', type=str, default='Plots', help='Directory to save the plot (default: Plots)')
+    parser.add_argument('-a', '--angles', type=str, default='0,-90', help='Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: "0,-90" , recommended: "5,-140")')
+    parser.add_argument('-v', '--view', action='store_true', help='Show the plot instead of saving it')
 
     args = parser.parse_args()
 
+    INPUT_FILE = args.input_file + '.csv'
     # Load the data from the input file
-    data = pd.read_csv(args.input_file)
+    data = pd.read_csv(INPUT_FILE)
 
     # Ensure the output directory exists
     os.makedirs(args.output_dir, exist_ok=True)
 
     # Generate output filename based on the input filename
-    base_filename = os.path.splitext(os.path.basename(args.input_file))[0] + '_3d_plot.png'
+    base_filename = os.path.splitext(os.path.basename(INPUT_FILE))[0] + '-3d-plot.png'
     output_filename = os.path.join(args.output_dir, base_filename)
 
     # Call the plot_data function
-    plot_data(data, output_filename)
+    elev, azim = map(float, [angle.strip() for angle in args.angles.split(',')])
+
+    # Call the plot_data function
+    plot_data(data, output_filename, elev, azim, args.view)
