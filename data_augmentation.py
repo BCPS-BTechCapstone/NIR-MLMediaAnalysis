@@ -18,7 +18,7 @@ def extract_sample_info(filename):
         scan_datetime = datetime.strptime(scan_datetime_str, '%Y%m%d%H%M%S')
         return sample_name, protocol, scan_number, scan_datetime
     except ValueError as e:
-        print(f"Error occurred while parsing: {e}")
+        print(f"\tError occurred while parsing: {e}")
         raise
 
 # Function to calculate the total number of scans and the total duration of the scans
@@ -56,24 +56,28 @@ def delete_existing_subsample_files(sample_name, export_path, auto_confirm):
     if not auto_confirm:
         confirm = input(f"Are you sure you want to delete {len(files_to_delete)} subsample file(s) for '{sample_name}'? [y/N]: ").strip().lower()
         if confirm != 'y':
-            print("Aborting deletion.")
+            print("\tAborting deletion.")
             return
 
     # Delete each of these files
+    #print('Deleting old files:')
     for file in files_to_delete:
         file_path = os.path.join(export_path, file)
         try:
             os.remove(file_path)
-            print(f"Deleted old subsample file: {file_path}")
+            print(f"\tDeleted old subsample file: {file_path}")
         except Exception as e:
-            print(f"Error deleting file {file_path}: {e}")
+            print(f"\tError deleting file {file_path}: {e}")
+    print('')
 
-def main(args):
-    SAMPLE_NAME = args.sample_name
+def main(args, sample):
+    SAMPLE_NAME = sample
     NUM_SUBSAMPLES = args.subsamples
     TIME_DELTA_INITIAL = args.initial_delta
     TIME_DELTA_APPEND = args.append_delta
     AUTO_CONFIRM = args.yes
+
+    print(f'\nProcessing {SAMPLE_NAME}:\n')
 
     # Get the absolute paths relative to the script directory
     FOLDER_PATH = os.path.join(args.folder_path, SAMPLE_NAME)
@@ -87,13 +91,15 @@ def main(args):
 
     # Check if there are any valid input files
     if not files:
-        print(f"No input files found for sample name '{SAMPLE_NAME}' in folder '{FOLDER_PATH}'. Please check the file paths.")
+        print(f"\tNo input files found for sample name '{SAMPLE_NAME}' in folder '{FOLDER_PATH}'. Please check the file paths.")
         return
 
     # Calculate the total number of scans and total duration
     total_scans, total_duration = calculate_total_scans_and_duration(files)
-    print(f"Total number of scans: {total_scans}")
-    print(f"Total duration of scans: {total_duration}")
+    #print('Scan Info:')
+    print(f"\tTotal number of scans: {total_scans}")
+    print(f"\tTotal duration of scans: {total_duration}")
+    print('')
 
     # Delete existing subsample files before exporting new ones
     delete_existing_subsample_files(SAMPLE_NAME, EXPORT_PATH, AUTO_CONFIRM)
@@ -112,7 +118,7 @@ def main(args):
         
         export_file_path = os.path.join(EXPORT_PATH, f"{SAMPLE_NAME}.csv")
         combined_df.to_csv(export_file_path, index=False)
-        print(f"Exported combined original data without augmentation: {export_file_path}")
+        print(f"\tExported combined original data without augmentation: {export_file_path}")
         return
 
     # Sort files by timestamp in the filename
@@ -134,7 +140,7 @@ def main(args):
 
         # Check if the DataFrame is empty
         if df.empty:
-            print(f"Warning: The input file '{file}' contains no data after skipping rows. Skipping this file.")
+            print(f"\tWarning: The input file '{file}' contains no data after skipping rows. Skipping this file.")
             continue
 
         # Determine which subsample this scan belongs to by using current offset for each subsample
@@ -159,6 +165,7 @@ def main(args):
                 break
 
     # Save each subsample to a CSV file in the EXPORT_PATH
+    #print("Saving Subsamples:")
     for subsample_idx, subsample_df in subsample_dfs.items():
         subsample_name = f"{SAMPLE_NAME}_{subsample_idx}.csv"
         export_file_path = os.path.join(EXPORT_PATH, subsample_name)
@@ -166,9 +173,10 @@ def main(args):
             subsample_df.to_csv(export_file_path, index=False)
             # Calculate total time delta for the subsample
             total_time_delta = end_times[subsample_idx] - start_times[subsample_idx] if start_times[subsample_idx] and end_times[subsample_idx] else timedelta(0)
-            print(f"Saved subsample: {subsample_name} with {scan_counts[subsample_idx]} scan(s) and total time delta of {total_time_delta}.")
+            print(f"\tSaved subsample: {subsample_name} with {scan_counts[subsample_idx]} scan(s) and total time delta of {total_time_delta}.")
         else:
-            print(f"Warning: Subsample {subsample_idx} contains no data and will not be saved.")
+            print(f"\tWarning: Subsample {subsample_idx} contains no data and will not be saved.")
+    print('')
 
 if __name__ == "__main__":
     # Setup argparse
@@ -176,7 +184,7 @@ if __name__ == "__main__":
         description="Process time-series CSV files for a specific sample.")
 
     # Positional argument for sample name
-    parser.add_argument('sample_name', type=str,
+    parser.add_argument('sample_name', type=str, nargs='+',
                         help='The sample name (e.g., "Sample1")')
 
     # Optional arguments (with defaults)
@@ -193,4 +201,5 @@ if __name__ == "__main__":
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
 
     args = parser.parse_args()
-    main(args)
+    
+    main(args, "Sample1")

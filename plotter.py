@@ -66,7 +66,7 @@ def plot_data(data, output_filename, elev, azim, show_plot):
     else:
         plt.savefig(output_filename, dpi=600)
         plt.close()
-        print(f"Plot saved to {output_filename}")
+        print(f"\tPlot saved to {output_filename}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Plotting Script for 3D Visualization of Absorbance Data")
@@ -91,5 +91,6 @@ if __name__ == "__main__":
     # Call the plot_data function
     elev, azim = map(float, [angle.strip() for angle in args.angles.split(',')])
 
+    print(f'Processing {INPUT_FILE}\n')
     # Call the plot_data function
     plot_data(data, output_filename, elev, azim, args.view)
