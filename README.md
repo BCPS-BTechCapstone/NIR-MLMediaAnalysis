@@ -42,9 +42,6 @@ The pipeline tool is designed to automate the processing, augmentation, and visu
 - **Automated Workflow**: Automates file management, processing, and plotting.
 - **Filename Parsing**: Extracts sample information such as sample name, protocol, scan number, and scan timestamp from the filenames.
 - **Scan Statistics**: Calculates the total number of scans and the total duration of the scans.
-- **Subsample Deletion**: Deletes existing subsample files for a specific sample to ensure the latest processing results are saved.
-- **Data Combination**: Combines all scans into one file without augmentation if specified by the user.
-- **Global Normalization**: Computes global maximum and minimum values for normalization across all subsamples.
 - **Data Loading and Preprocessing**: Loads NIR spectroscopy data from CSV files and preprocesses the data by padding and normalizing.
 - **1D Convolutional Neural Network**: Implements a 1D CNN for binary classification to distinguish between contaminated and non-contaminated samples.
 - **K-Fold Cross-Validation**: Uses Stratified K-Fold cross-validation to evaluate model performance on different subsets of the data.
