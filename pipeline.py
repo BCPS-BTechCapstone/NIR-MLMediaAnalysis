@@ -51,15 +51,15 @@ if __name__ == "__main__":
     # Optional arguments (with defaults)
     parser.add_argument('-s', '--subsamples', type=int, default=3,
                         help='Number of subsamples to create (default: 3)')
-    parser.add_argument('-i', '--initial_delta', type=int, default=60,
+    parser.add_argument('-i', '--initial-delta', type=int, default=60,
                         help='Initial time delta between scans in seconds (default: 60)')
-    parser.add_argument('-d', '--append_delta', type=int, default=900,
+    parser.add_argument('-d', '--append-delta', type=int, default=900,
                         help='Time delta for appending in seconds after the first split (default: 900)')
     parser.add_argument('-m', '--method', type=str, default=None, choices=['n','s'], 
                         help='Normalization method: n for normalization, s for MinMaxScaler')
-    parser.add_argument('-p', '--folder_path', type=str, default='Raw_Data',
+    parser.add_argument('-p', '--folder-path', type=str, default='Raw_Data',
                         help='Relative path to the folder containing the files (default: Raw_Data)')
-    parser.add_argument('-e', '--export_path', type=str, default='Datasets',
+    parser.add_argument('-e', '--export-path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
 
