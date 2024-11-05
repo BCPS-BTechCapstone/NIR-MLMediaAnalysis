@@ -31,13 +31,13 @@ def main(args):
                 continue
 
             # Generate output filename for each subsample plot
-            base_filename = os.path.basename(subsample_path).replace('.csv', '-3d-plot.png')
+            base_filename = os.path.basename(subsample_path).replace('.csv', '_plot.png')
             output_filename = os.path.join(plots_dir, base_filename)
 
             elev, azim = map(float, [angle.strip() for angle in args.angles.split(',')])
 
             # Call the plot_data function for each subsample
-            plot_data(data, output_filename, elev, azim, args.view)
+            plot_data(data, output_filename, elev, azim, args.view, args.method)
 
 if __name__ == "__main__":
     # Setup argparse
@@ -55,15 +55,19 @@ if __name__ == "__main__":
                         help='Initial time delta between scans in seconds (default: 60)')
     parser.add_argument('-d', '--append_delta', type=int, default=900,
                         help='Time delta for appending in seconds after the first split (default: 900)')
+    parser.add_argument('-m', '--method', type=str, default=None, choices=['n','s'], 
+                        help='Normalization method: n for normalization, s for MinMaxScaler')
     parser.add_argument('-p', '--folder_path', type=str, default='Raw_Data',
                         help='Relative path to the folder containing the files (default: Raw_Data)')
     parser.add_argument('-e', '--export_path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
 
-    parser.add_argument('-a', '--angles', type=str, default='0,-90', help='Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: "0,-90" , recommended: "5,-140")')
-    parser.add_argument('-v', '--view', action='store_true', help='Show the plot instead of saving it')
-
+    parser.add_argument('-a', '--angles', type=str, default='0,-90',
+                        help='Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: "0,-90" , recommended: "5,-140")')
+    parser.add_argument('-v', '--view', action='store_true',
+                        help='Show the plot instead of saving it')
+    
     args = parser.parse_args()
     main(args)
     print('')

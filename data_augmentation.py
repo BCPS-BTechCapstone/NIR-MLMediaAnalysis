@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 from datetime import datetime, timedelta
+from sklearn.preprocessing import MinMaxScaler
 import argparse
 
 # Function to extract sample information from the filename
@@ -114,7 +115,7 @@ def main(args, sample):
                 combined_df = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
                 combined_df.rename(columns={'Absorbance (AU)': f'Absorbance (AU) {extract_sample_info(file)[3]}'}, inplace=True)
             else:
-                combined_df[f'Absorbance (AU) {extract_sample_info(file)[3]}'] = df['Absorbance (AU)'].values
+                combined_df[f'Absorbance (AU) {extract_sample_info(file)[3]}'] = df['Absorbance (AU)'].astype(float).values
         
         export_file_path = os.path.join(EXPORT_PATH, f"{SAMPLE_NAME}.csv")
         combined_df.to_csv(export_file_path, index=False)
@@ -130,6 +131,10 @@ def main(args, sample):
     end_times = {i: None for i in range(1, NUM_SUBSAMPLES + 1)}  # Track end times
     timepoints = [None] * NUM_SUBSAMPLES  # Initialize timepoints for each subsample
     current_offsets = [i * TIME_DELTA_INITIAL for i in range(NUM_SUBSAMPLES)]  # Initial offsets
+
+    # Initialize global max and min values
+    global_max = float('-inf')
+    global_min = float('inf')
 
     # Process each scan
     for i, file in enumerate(files):
@@ -153,7 +158,7 @@ def main(args, sample):
                     subsample_dfs[subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
                     subsample_dfs[subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
                 else:
-                    subsample_dfs[subsample_idx][f'Absorbance (AU) {scan_datetime}'] = df['Absorbance (AU)'].values
+                    subsample_dfs[subsample_idx][f'Absorbance (AU) {scan_datetime}'] = df['Absorbance (AU)'].astype(float).values
 
                 # Update timepoints, scan count, and start/end times
                 if start_times[subsample_idx] is None:
@@ -164,12 +169,42 @@ def main(args, sample):
                 current_offsets[subsample_idx - 1] = TIME_DELTA_APPEND  # Switch to appending with the append delta
                 break
 
+    # Update global max and min values after all subsamples are created
+    for subsample_df in subsample_dfs.values():
+        if not subsample_df.empty:
+            current_max = subsample_df.iloc[:, 1:].max().max()  # Find max across all columns except 'Wavelength (nm)'
+            current_min = subsample_df.iloc[:, 1:].min().min()  # Find min across all columns except 'Wavelength (nm)'
+            if current_max > global_max:
+                global_max = current_max
+            if current_min < global_min:
+                global_min = current_min
+
+    # Print global max and min values before normalization
+    print(f"\tGlobal max value: {global_max}")
+    print(f"\tGlobal min value: {global_min}")
+    print('\tNormalizing the data...\n')
+
     # Save each subsample to a CSV file in the EXPORT_PATH
     #print("Saving Subsamples:")
+    method = args.method
     for subsample_idx, subsample_df in subsample_dfs.items():
-        subsample_name = f"{SAMPLE_NAME}_{subsample_idx}.csv"
+        if method is not None:
+            method = args.method.strip().lower()
+            subsample_name = f"{SAMPLE_NAME}_{subsample_idx}-{method}.csv"
+        else:
+            subsample_name = f"{SAMPLE_NAME}_{subsample_idx}.csv"
+
         export_file_path = os.path.join(EXPORT_PATH, subsample_name)
         if not subsample_df.empty:
+            # Normalize the data before exporting using the specified method
+            if method == 'n':
+                # Custom normalization
+                subsample_df.iloc[:, 1:] = subsample_df.iloc[:, 1:].apply(lambda x: (x - global_min) / (global_max - global_min))
+            elif method == 's':
+                # Scikit-learn MinMaxScaler
+                scaler = MinMaxScaler()
+                subsample_df.iloc[:, 1:] = scaler.fit_transform(subsample_df.iloc[:, 1:])
+
             subsample_df.to_csv(export_file_path, index=False)
             # Calculate total time delta for the subsample
             total_time_delta = end_times[subsample_idx] - start_times[subsample_idx] if start_times[subsample_idx] and end_times[subsample_idx] else timedelta(0)
@@ -194,6 +229,8 @@ if __name__ == "__main__":
                         help='Initial time delta between scans in seconds (default: 60)')
     parser.add_argument('-d', '--append_delta', type=int, default=900,
                         help='Time delta for appending in seconds after the first split (default: 900)')
+    parser.add_argument('-m', '--method', type=str, default='n', choices=['n','s'], 
+                        help='Normalization method: n for normalization, s for MinMaxScaler')
     parser.add_argument('-f', '--folder_path', type=str, default='Raw_Data',
                         help='Relative path to the folder containing the files (default: Raw_Data)')
     parser.add_argument('-e', '--export_path', type=str, default='Datasets',

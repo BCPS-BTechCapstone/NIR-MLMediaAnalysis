@@ -10,7 +10,7 @@ import matplotlib.colors as mcolors
 import os
 import argparse
 
-def plot_data(data, output_filename, elev, azim, show_plot):
+def plot_data(data, output_filename, elev, azim, show_plot, method=None):
     # Set seaborn theme
     sns.set_theme(style="whitegrid")
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     os.makedirs(args.output_dir, exist_ok=True)
 
     # Generate output filename based on the input filename
-    base_filename = os.path.splitext(os.path.basename(INPUT_FILE))[0] + '-3d-plot.png'
+    base_filename = os.path.splitext(os.path.basename(INPUT_FILE))[0] + '_plot.png'
     output_filename = os.path.join(args.output_dir, base_filename)
 
     # Call the plot_data function
