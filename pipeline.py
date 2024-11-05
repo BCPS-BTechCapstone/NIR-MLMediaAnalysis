@@ -31,7 +31,7 @@ def main(args):
                 continue
 
             # Generate output filename for each subsample plot
-            base_filename = os.path.basename(subsample_path).replace('.csv', '_plot.png')
+            base_filename = os.path.basename(subsample_path).replace('.csv', '_plot.'+args.type)
             output_filename = os.path.join(plots_dir, base_filename)
 
             elev, azim = map(float, [angle.strip() for angle in args.angles.split(',')])
@@ -67,6 +67,8 @@ if __name__ == "__main__":
                         help='Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: "0,-90" , recommended: "5,-140")')
     parser.add_argument('-v', '--view', action='store_true',
                         help='Show the plot instead of saving it')
+    parser.add_argument('-t', '--type', type=str, default='png', choices=['png','pgf'], 
+                        help='File type of the plots')
     
     args = parser.parse_args()
     main(args)

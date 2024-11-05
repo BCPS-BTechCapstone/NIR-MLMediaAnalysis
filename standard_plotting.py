@@ -16,7 +16,7 @@ ETHANOL_PREFIX = 'Ethanol'  # Prefix to filter ethanol files
 BLANKS_PREFIX = 'Quartz_'   # Prefix to filter blank files
 
 # Folder paths where the files are located
-ETHANOL_FOLDER_PATH = 'Ethanol_Standards'
+ETHANOL_FOLDER_PATH = 'EthanolNT_Standards'
 BLANKS_FOLDER_PATH = 'Blanks'
 
 # Function to normalize the absorbance based on the PGA gain
@@ -27,7 +27,7 @@ def normalize_by_pga(df, pga_gain):
     return df
 
 # List all files in the ethanol folder that match the ETHANOL_PREFIX
-ethanol_files = [f for f in os.listdir(ETHANOL_FOLDER_PATH) if f.startswith(ETHANOL_PREFIX)]
+ethanol_files = [f for f in os.listdir(ETHANOL_FOLDER_PATH) if f.startswith(ETHANOL_PREFIX) and f.endswith('.csv')]
 
 # List all files in the blanks folder that match the BLANKS_PREFIX
 blanks_files = [f for f in os.listdir(BLANKS_FOLDER_PATH) if f.startswith(BLANKS_PREFIX)]
