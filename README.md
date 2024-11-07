@@ -30,7 +30,7 @@ Implement  NIR spectroscopy and machine learning for the detection and real-time
 
 ## Overview
 
-This project implements a 1D Convolutional Neural Network (CNN) to detect contamination liquid culture media using Near-Infrared (NIR) spectroscopy data. The model is trained using time-series data from CSV files, with the aim of differentiating between contaminated and non-contaminated samples. The dataset is augmented and preprocessed before being fed into the CNN for training and evaluation.
+This project implements a 1D Convolutional Neural Network (CNN) to detect contamination in liquid culture media using Near-Infrared (NIR) spectroscopy data. The model is trained using time-series data from CSV files, with the aim of differentiating between contaminated and non-contaminated samples. The dataset is augmented and preprocessed before being fed into the CNN for training and evaluation.
 
 The pipeline tool is designed to automate the processing, augmentation, and visualization of time-series CSV data. It takes input sample names, performs data augmentation to generate subsamples, and generates 3D plots for each subsample. This script is ideal for analyzing time-series datasets and visualizing the processed results.
 
