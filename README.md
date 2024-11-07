@@ -8,10 +8,10 @@ Non-intrusive Testing of Liquid Culture Medium using Online NIR Spectroscopy and
 
 ### Contributers
 
-Benjamin Samuel\
-Connor Reintjes\
-Paola Gonzalez Perez\
-Shiza Hassan
+Benjamin Samuel [@benjoseph0212] \
+Connor Reintjes [@CMReintjes] \
+Paola Gonzalez Perez [@Pao-Glez] \
+Shiza Hassan [@xxshzxx]
 
 ### Supervisor
 
