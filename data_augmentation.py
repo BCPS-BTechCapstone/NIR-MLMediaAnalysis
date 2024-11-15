@@ -151,17 +151,26 @@ def main(args, sample):
             continue
 
         # Determine which subsample this scan belongs to by using current offset for each subsample
-        # Determine which subsample this scan belongs to by using current offset for each subsample
         for subsample_idx in range(1, NUM_SUBSAMPLES + 1):
             current_offset = current_offsets[subsample_idx - 1]  # Get the current offset for this subsample
 
             # Calculate the difference in seconds if there is an existing timepoint
             if timepoints[subsample_idx - 1] is None or (scan_datetime - timepoints[subsample_idx - 1]).total_seconds() >= current_offset:
+                # Collect new data for the subsample in a list
+                new_columns = []
+
                 if subsample_dfs[subsample_idx].empty:
-                    subsample_dfs[subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
-                    subsample_dfs[subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
+                    # Create the initial DataFrame with 'Wavelength (nm)' and the first Absorbance column
+                    subsample_dfs[subsample_idx] = df[['Wavelength (nm)']].copy()
+                    new_columns.append(pd.DataFrame({f'Absorbance (AU) {scan_datetime}': df['Absorbance (AU)'].astype(float).values}))
                 else:
-                    subsample_dfs[subsample_idx][f'Absorbance (AU) {scan_datetime}'] = df['Absorbance (AU)'].astype(float).values
+                    # Append new absorbance column to the list
+                    new_columns.append(pd.DataFrame({f'Absorbance (AU) {scan_datetime}': df['Absorbance (AU)'].astype(float).values}))
+
+                # Concatenate all new columns at once
+                if new_columns:
+                    new_columns_df = pd.concat(new_columns, axis=1)
+                    subsample_dfs[subsample_idx] = pd.concat([subsample_dfs[subsample_idx], new_columns_df], axis=1).copy()
 
                 # Update timepoints, scan count, and start/end times
                 if start_times[subsample_idx] is None:
@@ -171,7 +180,6 @@ def main(args, sample):
                 scan_counts[subsample_idx] += 1
                 current_offsets[subsample_idx - 1] = TIME_DELTA_APPEND  # Switch to appending with the append delta
                 break
-
 
     # Update global max and min values after all subsamples are created
     for subsample_df in subsample_dfs.values():
