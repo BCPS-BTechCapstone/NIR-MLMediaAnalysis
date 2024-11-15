@@ -48,7 +48,7 @@ def calculate_total_scans_and_duration(files):
 # Function to delete existing subsample files for the current sample
 def delete_existing_subsample_files(sample_name, export_path, auto_confirm):
     # List all files in the export path that start with the sample name
-    files_to_delete = [f for f in os.listdir(export_path) if f.startswith(sample_name) and f.endswith('.csv')]
+    files_to_delete = [f for f in os.listdir(export_path) if f.startswith(sample_name+'_') and f.endswith('.csv')]
     
     # If there are no files to delete, return
     if not files_to_delete:
