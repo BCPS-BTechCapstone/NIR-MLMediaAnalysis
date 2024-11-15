@@ -1,3 +1,4 @@
+from re import S
 import pandas as pd
 import os
 from datetime import datetime, timedelta
@@ -123,7 +124,8 @@ def main(args, sample):
         return
 
     # Sort files by timestamp in the filename
-    files = sorted(files, key=lambda x: datetime.strptime(x.replace('.csv', '').split('_')[4], '%H%M%S'))
+    files = sorted(files, key=lambda x: datetime.strptime(x.replace('.csv', '').split('_')[3] + x.replace('.csv', '').split('_')[4], '%Y%m%d%H%M%S'))
+
 
     subsample_dfs = {i: pd.DataFrame() for i in range(1, NUM_SUBSAMPLES + 1)}
     scan_counts = {i: 0 for i in range(1, NUM_SUBSAMPLES + 1)}  # To track the number of scans added
@@ -149,11 +151,12 @@ def main(args, sample):
             continue
 
         # Determine which subsample this scan belongs to by using current offset for each subsample
+        # Determine which subsample this scan belongs to by using current offset for each subsample
         for subsample_idx in range(1, NUM_SUBSAMPLES + 1):
             current_offset = current_offsets[subsample_idx - 1]  # Get the current offset for this subsample
 
-            # Check if this scan matches the current offset for the subsample
-            if timepoints[subsample_idx - 1] is None or scan_datetime - timepoints[subsample_idx - 1] >= timedelta(seconds=current_offset):
+            # Calculate the difference in seconds if there is an existing timepoint
+            if timepoints[subsample_idx - 1] is None or (scan_datetime - timepoints[subsample_idx - 1]).total_seconds() >= current_offset:
                 if subsample_dfs[subsample_idx].empty:
                     subsample_dfs[subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
                     subsample_dfs[subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
@@ -168,6 +171,7 @@ def main(args, sample):
                 scan_counts[subsample_idx] += 1
                 current_offsets[subsample_idx - 1] = TIME_DELTA_APPEND  # Switch to appending with the append delta
                 break
+
 
     # Update global max and min values after all subsamples are created
     for subsample_df in subsample_dfs.values():
@@ -239,4 +243,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    main(args, "Sample1")
+    main(args)
