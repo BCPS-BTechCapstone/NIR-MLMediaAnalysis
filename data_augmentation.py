@@ -1,3 +1,4 @@
+from re import S
 import pandas as pd
 import os
 from datetime import datetime, timedelta
@@ -47,7 +48,7 @@ def calculate_total_scans_and_duration(files):
 # Function to delete existing subsample files for the current sample
 def delete_existing_subsample_files(sample_name, export_path, auto_confirm):
     # List all files in the export path that start with the sample name
-    files_to_delete = [f for f in os.listdir(export_path) if f.startswith(sample_name) and f.endswith('.csv')]
+    files_to_delete = [f for f in os.listdir(export_path) if f.startswith(sample_name+'_') and f.endswith('.csv')]
     
     # If there are no files to delete, return
     if not files_to_delete:
@@ -123,7 +124,8 @@ def main(args, sample):
         return
 
     # Sort files by timestamp in the filename
-    files = sorted(files, key=lambda x: datetime.strptime(x.replace('.csv', '').split('_')[4], '%H%M%S'))
+    files = sorted(files, key=lambda x: datetime.strptime(x.replace('.csv', '').split('_')[3] + x.replace('.csv', '').split('_')[4], '%Y%m%d%H%M%S'))
+
 
     subsample_dfs = {i: pd.DataFrame() for i in range(1, NUM_SUBSAMPLES + 1)}
     scan_counts = {i: 0 for i in range(1, NUM_SUBSAMPLES + 1)}  # To track the number of scans added
@@ -152,13 +154,23 @@ def main(args, sample):
         for subsample_idx in range(1, NUM_SUBSAMPLES + 1):
             current_offset = current_offsets[subsample_idx - 1]  # Get the current offset for this subsample
 
-            # Check if this scan matches the current offset for the subsample
-            if timepoints[subsample_idx - 1] is None or scan_datetime - timepoints[subsample_idx - 1] >= timedelta(seconds=current_offset):
+            # Calculate the difference in seconds if there is an existing timepoint
+            if timepoints[subsample_idx - 1] is None or (scan_datetime - timepoints[subsample_idx - 1]).total_seconds() >= current_offset:
+                # Collect new data for the subsample in a list
+                new_columns = []
+
                 if subsample_dfs[subsample_idx].empty:
-                    subsample_dfs[subsample_idx] = df[['Wavelength (nm)', 'Absorbance (AU)']].copy()
-                    subsample_dfs[subsample_idx].rename(columns={'Absorbance (AU)': f'Absorbance (AU) {scan_datetime}'}, inplace=True)
+                    # Create the initial DataFrame with 'Wavelength (nm)' and the first Absorbance column
+                    subsample_dfs[subsample_idx] = df[['Wavelength (nm)']].copy()
+                    new_columns.append(pd.DataFrame({f'Absorbance (AU) {scan_datetime}': df['Absorbance (AU)'].astype(float).values}))
                 else:
-                    subsample_dfs[subsample_idx][f'Absorbance (AU) {scan_datetime}'] = df['Absorbance (AU)'].astype(float).values
+                    # Append new absorbance column to the list
+                    new_columns.append(pd.DataFrame({f'Absorbance (AU) {scan_datetime}': df['Absorbance (AU)'].astype(float).values}))
+
+                # Concatenate all new columns at once
+                if new_columns:
+                    new_columns_df = pd.concat(new_columns, axis=1)
+                    subsample_dfs[subsample_idx] = pd.concat([subsample_dfs[subsample_idx], new_columns_df], axis=1).copy()
 
                 # Update timepoints, scan count, and start/end times
                 if start_times[subsample_idx] is None:
@@ -239,4 +251,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    main(args, "Sample1")
+    main(args)
