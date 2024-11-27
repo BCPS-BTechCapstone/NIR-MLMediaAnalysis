@@ -72,12 +72,30 @@ def delete_existing_subsample_files(sample_name, export_path, auto_confirm):
             print(f"\tError deleting file {file_path}: {e}")
     print('')
 
+
+def normalize_pga_gain(file_path, data_column, pga_normal=64):
+    with open(file_path, 'r') as file:
+        for line in file:
+            if "PGA Gain" in line:
+                # Extract the value after the colon
+                pga_gain = float(line.split(",")[1].strip())
+                break
+        
+        if pga_gain != pga_normal:
+            print(f"Normalizing PGA gain of file: {file_path} ({pga_gain})")
+            return data_column * (pga_normal/pga_gain)
+        else:
+            return data_column
+
+
 def main(args, sample):
     SAMPLE_NAME = sample
     NUM_SUBSAMPLES = args.subsamples
     TIME_DELTA_INITIAL = args.initial_delta
     TIME_DELTA_APPEND = args.append_delta
     AUTO_CONFIRM = args.yes
+
+    PGA_NORMAL = 64
 
     print(f'\nProcessing {SAMPLE_NAME}:\n')
 
@@ -149,6 +167,8 @@ def main(args, sample):
         if df.empty:
             print(f"\tWarning: The input file '{file}' contains no data after skipping rows. Skipping this file.")
             continue
+
+        df['Absorbance (AU)'] = normalize_pga_gain(file_path, df['Absorbance (AU)'], PGA_NORMAL)    
 
         # Determine which subsample this scan belongs to by using current offset for each subsample
         for subsample_idx in range(1, NUM_SUBSAMPLES + 1):
@@ -251,4 +271,5 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    main(args)
+    for sample in list(args.sample_name):
+        main(args, sample)
