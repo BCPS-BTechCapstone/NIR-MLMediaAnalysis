@@ -77,7 +77,7 @@ if __name__ == "__main__":
     parser.add_argument('--output_dir', type=str, default='Plots', help='Directory to save the plot (default: Plots)')
     parser.add_argument('-a', '--angles', type=str, default='0,-90', help='Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: "0,-90" , recommended: "5,-140")')
     parser.add_argument('-v', '--view', action='store_true', help='Show the plot instead of saving it')
-    parser.add_argument('t', '--type', type=str, default='png', choices=['png','pgf'], help='File type of the plots')
+    parser.add_argument('-t', '--type', type=str, default='png', choices=['png','pgf'], help='File type of the plots')
 
     args = parser.parse_args()
 
