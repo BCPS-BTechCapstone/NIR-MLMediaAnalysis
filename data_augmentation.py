@@ -231,7 +231,7 @@ if __name__ == "__main__":
         description="Process time-series CSV files for a specific sample.")
 
     # Positional argument for sample name
-    parser.add_argument('sample_name', type=str, nargs='+',
+    parser.add_argument('sample_name', type=str,
                         help='The sample name (e.g., "Sample1")')
 
     # Optional arguments (with defaults)
@@ -251,4 +251,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    main(args)
+    main(args, args.sample_name)
