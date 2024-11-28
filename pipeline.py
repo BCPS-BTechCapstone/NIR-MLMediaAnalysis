@@ -38,7 +38,8 @@ def main(args):
             elev, azim = map(float, [angle.strip() for angle in args.angles.split(',')])
 
             # Call the plot_data function for each subsample
-            plot_data(data, output_filename, elev, azim, args.view, args.method)
+            if args.no_plot is not True:
+                plot_data(data, output_filename, elev, azim, args.view, args.method)
 
 if __name__ == "__main__":
     # Setup argparse
@@ -73,6 +74,8 @@ if __name__ == "__main__":
                         help='Show the plot instead of saving it')
     parser.add_argument('-t', '--type', type=str, default='png', choices=['png','pgf'], 
                         help='File type of the plots')
+    parser.add_argument('--no-plot', action='store_true',
+                        help='Don\'t perform plotting operation')
     
     args = parser.parse_args()
     main(args)
