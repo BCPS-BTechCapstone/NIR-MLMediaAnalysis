@@ -77,12 +77,14 @@ conda env create -f NIRenv.yml
 The script can be executed using the following command:
 
 ```bash
-python pipeline.py <sample_name> [options]
+python pipeline.py <sample_name> <sample_start> <sample_end> [options]
 ```
 
 #### Positional Argument
 
-- `<sample_name>`: One or more sample names for processing. Example: `Sample1` or `Sample1 Sample2`
+- `<sample_name>`: Sample name prefix (i.e. Sample)
+- `<sample_start>`: Start value for sample numbers
+- `<sample_end>`: End value for sample numbers
 
 #### Optional Arguments
 
@@ -95,19 +97,21 @@ python pipeline.py <sample_name> [options]
 - `-y`, `--yes`: Automatically confirm deletion of existing subsample files.
 - `-a`, `--angles`: Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: `0,-90`).
 - `-v`, `--view`: Show the plot instead of saving it.
+- `--noise`: Add Gaussian Noise to the normalized data before output
+- `--no-plot`: Don't perform plotting operation
 
 #### Example
 
-To process a sample named `Sample1` and create 3D plots:
+To process samples named `Sample1` through `Sample4` and create 3D plots:
 
 ```bash
-python pipeline.py Sample1 -s 5 -i 120 -d 1800 -m n -p Data -e Processed -a 5,-140
+python pipeline.py Sample 1 4 -s 5 -i 120 -d 1800 -m n -p Data -e Processed -a 5,-140
 ```
 
 This command will:
 
-- Process the sample named `Sample1`
-- Create 5 subsamples
+- Process the samples named `Sample1`, `Sample2`, `Sample3`, `Sample4`
+- Create 5 subsamples for each
 - Use 120 seconds for the initial time delta and 1800 seconds for appending time delta
 - Apply normalization (`-m n`)
 - Use the folder `Data` for raw data and `Processed` for exporting results
