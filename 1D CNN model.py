@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Conv1D, MaxPooling1D, Flatten, Dense, Dropout
 from keras.callbacks import ModelCheckpoint
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
 import os
@@ -15,22 +15,22 @@ import pandas as pd
 # Directory containing all sample runs
 base_dir = './Datasets'
 
-print(f"Checking directory: {base_dir}")
-if not os.path.exists(base_dir):
-    raise ValueError(f"The directory {base_dir} does not exist.")
+non_contaminated_dir = os.path.join(base_dir, 'Non-Contaminated')
+contaminated_dir = os.path.join(base_dir, 'Contaminated')
+
+print(f"Checking directories: {non_contaminated_dir}, {contaminated_dir}")
+if not os.path.exists(non_contaminated_dir) or not os.path.exists(contaminated_dir):
+    raise ValueError(f"The directories {non_contaminated_dir} or {contaminated_dir} do not exist.")
 
 # Lists to hold data and labels
 X_data = []
 Y_data = []
 
-print("Listing folders in the base directory:")
-for folder_name in os.listdir(base_dir):
-    print(f"Found folder: {folder_name}")
-
-# Loop through each CSV file in the base directory
-for csv_file in os.listdir(base_dir):
+# Load non-contaminated data
+print("Loading non-contaminated data:")
+for csv_file in os.listdir(non_contaminated_dir):
     if csv_file.endswith('.csv'):
-        csv_path = os.path.join(base_dir, csv_file)
+        csv_path = os.path.join(non_contaminated_dir, csv_file)
         print(f"Loading file: {csv_path}")
 
         # Load the CSV and append to data list
@@ -38,10 +38,21 @@ for csv_file in os.listdir(base_dir):
         time_series_array = df.values  # Assuming the data in the CSV is correctly structured as (num_time_steps, num_features)
 
         X_data.append(time_series_array)
+        Y_data.append(0)  # Non-contaminated label
 
-        # Assign label based on file name
-        if '_1' in csv_file.lower() or '_2' in csv_file.lower() or '_3' in csv_file.lower():
-            Y_data.append(0)  # Non-contaminated (augmented data)
+# Load contaminated data
+print("Loading contaminated data:")
+for csv_file in os.listdir(contaminated_dir):
+    if csv_file.endswith('.csv'):
+        csv_path = os.path.join(contaminated_dir, csv_file)
+        print(f"Loading file: {csv_path}")
+
+        # Load the CSV and append to data list
+        df = pd.read_csv(csv_path)
+        time_series_array = df.values  # Assuming the data in the CSV is correctly structured as (num_time_steps, num_features)
+
+        X_data.append(time_series_array)
+        Y_data.append(1)  # Contaminated label
 
 # Determine the maximum timepoints and features
 max_timepoints = max([x.shape[0] for x in X_data])
@@ -56,7 +67,7 @@ for x in X_data:
 
 # Convert lists to NumPy arrays
 if len(X_padded) == 0:
-    raise ValueError("No data found. Please ensure the base directory contains correctly named folders and CSV files.")
+    raise ValueError("No data found. Please ensure the directories contain correctly named folders and CSV files.")
 
 X = np.array(X_padded)  # Shape: (num_samples, max_timepoints, max_features)
 Y = np.array(Y_data)  # Shape: (num_samples,)
@@ -67,6 +78,9 @@ if X.size == 0:
 
 scaler = MinMaxScaler()
 X = scaler.fit_transform(X.reshape(-1, X.shape[-1])).reshape(X.shape)
+
+# Split the data into training and validation sets
+X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=0.2, stratify=Y, random_state=42)
 
 # Define 1D CNN model function
 def create_model(input_shape):
@@ -83,72 +97,37 @@ def create_model(input_shape):
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return model
 
-# Check data balance
-print(f"Number of non-contaminated samples: {np.sum(Y == 0)}")
-print(f"Number of contaminated samples: {np.sum(Y == 1)}")
-
-# K-Fold Cross-Validation
-kf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-fold = 1
+# Create a new instance of the model
+model = create_model(input_shape=(X_train.shape[1], X_train.shape[2]))
 
 best_checkpoint = ModelCheckpoint('best_model_overall.keras', monitor='val_loss', save_best_only=True, verbose=1)
 
-val_accuracies = []
-for train_index, val_index in kf.split(X, Y):
-    print(f'Training on Fold {fold}...')
-    
-    X_train, X_val = X[train_index], X[val_index]
-    Y_train, Y_val = Y[train_index], Y[val_index]
-    
-    # Create a new instance of the model
-    model = create_model(input_shape=(X_train.shape[1], X_train.shape[2]))
-    
-    # Train the model
-    history = model.fit(X_train, Y_train, epochs=50, batch_size=16, validation_data=(X_val, Y_val), callbacks=[best_checkpoint])
-    
-    # Plot validation loss and accuracy over training epochs for this fold
-    plt.plot(history.history['val_loss'], label=f'Validation Loss Fold {fold}')
-    plt.plot(history.history['val_accuracy'], label=f'Validation Accuracy Fold {fold}')
-    
-    # Record validation accuracy for each fold
-    val_accuracy = history.history['val_accuracy'][-1]
-    val_accuracies.append(val_accuracy)
-    
-    fold += 1
+# Train the model
+history = model.fit(X_train, Y_train, epochs=50, batch_size=16, validation_data=(X_val, Y_val), callbacks=[best_checkpoint])
 
-# Show validation loss and accuracy plot
+# Plot validation loss and accuracy over training epochs
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+
 plt.xlabel('Epochs')
 plt.ylabel('Metrics')
-plt.title('Validation Loss and Accuracy Over Epochs for Each Fold')
+plt.title('Validation Loss and Accuracy Over Epochs')
 plt.legend()
 plt.show()
 
-# Show validation accuracy for each fold
-plt.figure()
-plt.plot(range(1, len(val_accuracies) + 1), val_accuracies, marker='o', linestyle='-', label='Validation Accuracy per Fold')
-plt.xlabel('Fold Number')
-plt.ylabel('Accuracy')
-plt.title('Validation Accuracy per Fold')
-plt.legend()
-plt.show()
-
-# Assuming final model is trained on the entire dataset for evaluation purposes
-model = create_model(input_shape=(X.shape[1], X.shape[2]))
-model.fit(X, Y, epochs=50, batch_size=16, callbacks=[best_checkpoint])
-
-# Predict on the entire dataset (or use a held-out test set)
-Y_pred = (model.predict(X) > 0.5).astype('int32')
+# Predict on the validation dataset
+Y_pred = (model.predict(X_val) > 0.5).astype('int32')
 
 # Plot confusion matrix
-cm = confusion_matrix(Y, Y_pred, labels=[0, 1])
+cm = confusion_matrix(Y_val, Y_pred, labels=[0, 1])
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Non-Contaminated', 'Contaminated'])
 disp.plot(cmap=plt.cm.Blues)
 plt.title('Confusion Matrix')
 plt.show()
 
 # Compute ROC curve and AUC
-Y_prob = model.predict(X).ravel()
-fpr, tpr, _ = roc_curve(Y, Y_prob)
+Y_prob = model.predict(X_val).ravel()
+fpr, tpr, _ = roc_curve(Y_val, Y_prob)
 roc_auc = auc(fpr, tpr)
 
 # Plot ROC curve
