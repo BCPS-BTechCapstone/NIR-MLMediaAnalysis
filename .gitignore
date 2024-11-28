@@ -8,7 +8,7 @@
 !Ethanol_Standard.png
 !Ethanol-Plastic_Standard.png
 !Plots/*.png
-!Datasets/*.csv
+!Datasets/*/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
