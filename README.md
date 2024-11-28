@@ -50,7 +50,7 @@ The pipeline tool is designed to automate the processing, augmentation, and visu
 
 ### Requirements
 
-- Python 3.x
+- Python 3.10.x
 - Pandas
 - Matplotlib
 - Scikit-learn
