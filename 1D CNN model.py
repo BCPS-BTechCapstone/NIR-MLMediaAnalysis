@@ -2,12 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Conv1D, MaxPooling1D, Flatten, Dense, Dropout
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, TensorBoard
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
 import os
 import pandas as pd
+import datetime
 
 # Load the NIR data from CSV files
 # Assuming each CSV file contains all the timepoints for that run
@@ -102,8 +103,12 @@ model = create_model(input_shape=(X_train.shape[1], X_train.shape[2]))
 
 best_checkpoint = ModelCheckpoint('best_model_overall.keras', monitor='val_loss', save_best_only=True, verbose=1)
 
+# Define TensorBoard callback
+log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+
 # Train the model
-history = model.fit(X_train, Y_train, epochs=50, batch_size=16, validation_data=(X_val, Y_val), callbacks=[best_checkpoint])
+history = model.fit(X_train, Y_train, epochs=50, batch_size=16, validation_data=(X_val, Y_val), callbacks=[best_checkpoint, tensorboard_callback])
 
 # Plot validation loss and accuracy over training epochs
 plt.plot(history.history['val_loss'], label='Validation Loss')
