@@ -66,7 +66,7 @@ if __name__ == "__main__":
     parser.add_argument('-e', '--export-path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
-    parser.add_argument('--noise', action='store_true', help='Automatically confirm deletion of existing subsample files')
+    parser.add_argument('--noise', action='store_true', help='Add Gaussian Noise to the normalized data before output')
 
     parser.add_argument('-a', '--angles', type=str, default='0,-90',
                         help='Elevation and azimuth angles for the 3D plot view as a comma-separated list (default: "0,-90" , recommended: "5,-140")')
