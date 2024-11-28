@@ -1,9 +1,26 @@
-from re import S
 import pandas as pd
 import os
+import numpy as np
 from datetime import datetime, timedelta
 from sklearn.preprocessing import MinMaxScaler
 import argparse
+
+
+def add_noise(series):
+    "Add guassian noise to series and return"
+    # Assuming df['Absorbance (AU)'] is your column of absorbance values
+    # Convert it to float values (if not already) and extract as a NumPy array
+    absorbance_values = series.astype(float).values
+    # Parameters for Gaussian noise
+    mean = 0  # Mean of the Gaussian distribution
+    std = 0.0075  # Standard deviation of the Gaussian distribution (adjust as needed)
+    # Generate Gaussian noise
+    noise = np.random.normal(mean, std, absorbance_values.shape)
+    # Add noise to the absorbance values
+    noisy_absorbance = absorbance_values + noise
+    # Replace the column in the DataFrame with the noisy values
+    return noisy_absorbance
+
 
 # Function to extract sample information from the filename
 def extract_sample_info(filename):
@@ -78,6 +95,7 @@ def main(args, sample):
     TIME_DELTA_INITIAL = args.initial_delta
     TIME_DELTA_APPEND = args.append_delta
     AUTO_CONFIRM = args.yes
+    NOISE = args.noise
 
     print(f'\nProcessing {SAMPLE_NAME}:\n')
 
@@ -158,6 +176,9 @@ def main(args, sample):
             if timepoints[subsample_idx - 1] is None or (scan_datetime - timepoints[subsample_idx - 1]).total_seconds() >= current_offset:
                 # Collect new data for the subsample in a list
                 new_columns = []
+
+                if NOISE:
+                    df['Absorbance (AU)'] = add_noise(df['Absorbance (AU)'])
 
                 if subsample_dfs[subsample_idx].empty:
                     # Create the initial DataFrame with 'Wavelength (nm)' and the first Absorbance column
@@ -248,6 +269,7 @@ if __name__ == "__main__":
     parser.add_argument('-e', '--export-path', type=str, default='Datasets',
                         help='Relative path to export the processed subsamples (default: Datasets)')
     parser.add_argument('-y', '--yes', action='store_true', help='Automatically confirm deletion of existing subsample files')
+    parser.add_argument('--noise', action='store_true', help='Automatically confirm deletion of existing subsample files')
 
     args = parser.parse_args()
     
