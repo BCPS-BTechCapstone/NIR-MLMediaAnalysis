@@ -13,7 +13,7 @@ def add_noise(series):
     absorbance_values = series.astype(float).values
     # Parameters for Gaussian noise
     mean = 0  # Mean of the Gaussian distribution
-    std = 0.0075  # Standard deviation of the Gaussian distribution (adjust as needed)
+    std = 0.005  # Standard deviation of the Gaussian distribution (adjust as needed)
     # Generate Gaussian noise
     noise = np.random.normal(mean, std, absorbance_values.shape)
     # Add noise to the absorbance values

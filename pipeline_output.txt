@@ -1,19 +1,12 @@
-(NIRenv) PS C:\Users\corei\Documents\GitHub\NIR-MLMediaAnalysis> python .\pipeline.py Sample 1 22 -s 6 -m n -p "C:\Users\corei\Documents\McMaster\Year 4 - Capstone Project\4TR3\Datasets" --yes --no-plot --noise
+(NIRenv) PS C:\Users\corei\Documents\GitHub\NIR-MLMediaAnalysis> python .\pipeline.py Sample 1 22 -s 7 -m n -p "C:\Users\corei\Documents\McMaster\Year 4 - Capstone Project\4TR3\Datasets" --yes --no-plot --noise
 
 Processing Sample1:
 
         Total number of scans: 319
         Total duration of scans: 1 day, 0:00:22
 
-        Deleted old subsample file: Datasets\Sample1_1-n.csv
-        Deleted old subsample file: Datasets\Sample1_2-n.csv
-        Deleted old subsample file: Datasets\Sample1_3-n.csv
-        Deleted old subsample file: Datasets\Sample1_4-n.csv
-        Deleted old subsample file: Datasets\Sample1_5-n.csv
-        Deleted old subsample file: Datasets\Sample1_6-n.csv
-
-        Global max value: 0.4871138958296063
-        Global min value: -0.2701777341751542
+        Global max value: 0.48220803305337057
+        Global min value: -0.27090038157729124
         Normalizing the data...
 
         Saved subsample: Sample1_1-n.csv with 95 scan(s) and total time delta of 23:55:18.
@@ -22,6 +15,7 @@ Processing Sample1:
         Saved subsample: Sample1_4-n.csv with 1 scan(s) and total time delta of 0:00:00.
         Saved subsample: Sample1_5-n.csv with 1 scan(s) and total time delta of 0:00:00.
         Saved subsample: Sample1_6-n.csv with 1 scan(s) and total time delta of 0:00:00.
+        Saved subsample: Sample1_7-n.csv with 1 scan(s) and total time delta of 0:00:00.
 
 
 Processing Sample2:
@@ -29,15 +23,8 @@ Processing Sample2:
         Total number of scans: 1425
         Total duration of scans: 1 day, 1:36:01
 
-        Deleted old subsample file: Datasets\Sample2_1-n.csv
-        Deleted old subsample file: Datasets\Sample2_2-n.csv
-        Deleted old subsample file: Datasets\Sample2_3-n.csv
-        Deleted old subsample file: Datasets\Sample2_4-n.csv
-        Deleted old subsample file: Datasets\Sample2_5-n.csv
-        Deleted old subsample file: Datasets\Sample2_6-n.csv
-
-        Global max value: 2.4103591057711995
-        Global min value: 1.5600193930169148
+        Global max value: 2.398634228613529
+        Global min value: 1.5650748580706924
         Normalizing the data...
 
         Saved subsample: Sample2_1-n.csv with 102 scan(s) and total time delta of 1 day, 1:31:40.
@@ -46,6 +33,7 @@ Processing Sample2:
         Saved subsample: Sample2_4-n.csv with 102 scan(s) and total time delta of 1 day, 1:31:41.
         Saved subsample: Sample2_5-n.csv with 102 scan(s) and total time delta of 1 day, 1:31:41.
         Saved subsample: Sample2_6-n.csv with 101 scan(s) and total time delta of 1 day, 1:16:30.
+        Saved subsample: Sample2_7-n.csv with 101 scan(s) and total time delta of 1 day, 1:16:30.
 
 
 Processing Sample3:
@@ -53,15 +41,8 @@ Processing Sample3:
         Total number of scans: 1422
         Total duration of scans: 1 day, 1:25:43
 
-        Deleted old subsample file: Datasets\Sample3_1-n.csv
-        Deleted old subsample file: Datasets\Sample3_2-n.csv
-        Deleted old subsample file: Datasets\Sample3_3-n.csv
-        Deleted old subsample file: Datasets\Sample3_4-n.csv
-        Deleted old subsample file: Datasets\Sample3_5-n.csv
-        Deleted old subsample file: Datasets\Sample3_6-n.csv
-
-        Global max value: 2.322139382857899
-        Global min value: 1.501047831924777
+        Global max value: 2.31325055323659
+        Global min value: 1.5106516326339392
         Normalizing the data...
 
         Saved subsample: Sample3_1-n.csv with 102 scan(s) and total time delta of 1 day, 1:25:43.
@@ -70,6 +51,7 @@ Processing Sample3:
         Saved subsample: Sample3_4-n.csv with 101 scan(s) and total time delta of 1 day, 1:10:37.
         Saved subsample: Sample3_5-n.csv with 101 scan(s) and total time delta of 1 day, 1:10:36.
         Saved subsample: Sample3_6-n.csv with 101 scan(s) and total time delta of 1 day, 1:10:37.
+        Saved subsample: Sample3_7-n.csv with 101 scan(s) and total time delta of 1 day, 1:10:37.
 
 
 Processing Sample4:
@@ -77,15 +59,8 @@ Processing Sample4:
         Total number of scans: 1383
         Total duration of scans: 1 day, 1:00:55
 
-        Deleted old subsample file: Datasets\Sample4_1-n.csv
-        Deleted old subsample file: Datasets\Sample4_2-n.csv
-        Deleted old subsample file: Datasets\Sample4_3-n.csv
-        Deleted old subsample file: Datasets\Sample4_4-n.csv
-        Deleted old subsample file: Datasets\Sample4_5-n.csv
-        Deleted old subsample file: Datasets\Sample4_6-n.csv
-
-        Global max value: 2.41926686128721
-        Global min value: 1.5278495894726627
+        Global max value: 2.4125042905526044
+        Global min value: 1.5317591890966744
         Normalizing the data...
 
         Saved subsample: Sample4_1-n.csv with 99 scan(s) and total time delta of 1 day, 0:49:59.
@@ -94,6 +69,7 @@ Processing Sample4:
         Saved subsample: Sample4_4-n.csv with 99 scan(s) and total time delta of 1 day, 0:50:02.
         Saved subsample: Sample4_5-n.csv with 99 scan(s) and total time delta of 1 day, 0:50:03.
         Saved subsample: Sample4_6-n.csv with 99 scan(s) and total time delta of 1 day, 0:50:03.
+        Saved subsample: Sample4_7-n.csv with 99 scan(s) and total time delta of 1 day, 0:50:05.
 
 
 Processing Sample5:
@@ -101,15 +77,8 @@ Processing Sample5:
         Total number of scans: 1409
         Total duration of scans: 1 day, 1:15:22
 
-        Deleted old subsample file: Datasets\Sample5_1-n.csv
-        Deleted old subsample file: Datasets\Sample5_2-n.csv
-        Deleted old subsample file: Datasets\Sample5_3-n.csv
-        Deleted old subsample file: Datasets\Sample5_4-n.csv
-        Deleted old subsample file: Datasets\Sample5_5-n.csv
-        Deleted old subsample file: Datasets\Sample5_6-n.csv
-
-        Global max value: 2.504436523036601
-        Global min value: 1.5368564026919367
+        Global max value: 2.550922967194907
+        Global min value: 1.5387718165111766
         Normalizing the data...
 
         Saved subsample: Sample5_1-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:59.
@@ -118,6 +87,7 @@ Processing Sample5:
         Saved subsample: Sample5_4-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:59.
         Saved subsample: Sample5_5-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:59.
         Saved subsample: Sample5_6-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:59.
+        Saved subsample: Sample5_7-n.csv with 100 scan(s) and total time delta of 1 day, 0:54:53.
 
 
 Processing Sample6:
@@ -125,15 +95,8 @@ Processing Sample6:
         Total number of scans: 332
         Total duration of scans: 5:58:23
 
-        Deleted old subsample file: Datasets\Sample6_1-n.csv
-        Deleted old subsample file: Datasets\Sample6_2-n.csv
-        Deleted old subsample file: Datasets\Sample6_3-n.csv
-        Deleted old subsample file: Datasets\Sample6_4-n.csv
-        Deleted old subsample file: Datasets\Sample6_5-n.csv
-        Deleted old subsample file: Datasets\Sample6_6-n.csv
-
-        Global max value: 2.558509787340445
-        Global min value: 1.587457109366989
+        Global max value: 2.548851336428219
+        Global min value: 1.584514615266922
         Normalizing the data...
 
         Saved subsample: Sample6_1-n.csv with 24 scan(s) and total time delta of 5:48:38.
@@ -142,6 +105,7 @@ Processing Sample6:
         Saved subsample: Sample6_4-n.csv with 24 scan(s) and total time delta of 5:48:38.
         Saved subsample: Sample6_5-n.csv with 24 scan(s) and total time delta of 5:48:38.
         Saved subsample: Sample6_6-n.csv with 24 scan(s) and total time delta of 5:48:38.
+        Saved subsample: Sample6_7-n.csv with 24 scan(s) and total time delta of 5:48:38.
 
 
 Processing Sample7:
@@ -149,15 +113,8 @@ Processing Sample7:
         Total number of scans: 54
         Total duration of scans: 0:57:11
 
-        Deleted old subsample file: Datasets\Sample7_1-n.csv
-        Deleted old subsample file: Datasets\Sample7_2-n.csv
-        Deleted old subsample file: Datasets\Sample7_3-n.csv
-        Deleted old subsample file: Datasets\Sample7_4-n.csv
-        Deleted old subsample file: Datasets\Sample7_5-n.csv
-        Deleted old subsample file: Datasets\Sample7_6-n.csv
-
-        Global max value: 2.476053398951008
-        Global min value: 1.6091801426126127
+        Global max value: 2.4719291686412665
+        Global min value: 1.6058809274230723
         Normalizing the data...
 
         Saved subsample: Sample7_1-n.csv with 4 scan(s) and total time delta of 0:45:19.
@@ -166,6 +123,7 @@ Processing Sample7:
         Saved subsample: Sample7_4-n.csv with 4 scan(s) and total time delta of 0:45:18.
         Saved subsample: Sample7_5-n.csv with 4 scan(s) and total time delta of 0:45:18.
         Saved subsample: Sample7_6-n.csv with 4 scan(s) and total time delta of 0:45:18.
+        Saved subsample: Sample7_7-n.csv with 4 scan(s) and total time delta of 0:45:18.
 
 
 Processing Sample8:
@@ -173,15 +131,8 @@ Processing Sample8:
         Total number of scans: 1450
         Total duration of scans: 1 day, 1:54:52
 
-        Deleted old subsample file: Datasets\Sample8_1-n.csv
-        Deleted old subsample file: Datasets\Sample8_2-n.csv
-        Deleted old subsample file: Datasets\Sample8_3-n.csv
-        Deleted old subsample file: Datasets\Sample8_4-n.csv
-        Deleted old subsample file: Datasets\Sample8_5-n.csv
-        Deleted old subsample file: Datasets\Sample8_6-n.csv
-
-        Global max value: 2.6098892199381147
-        Global min value: 1.5028524486062955
+        Global max value: 2.596671887785434
+        Global min value: 1.5035014767771375
         Normalizing the data...
 
         Saved subsample: Sample8_1-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:50.
@@ -190,6 +141,7 @@ Processing Sample8:
         Saved subsample: Sample8_4-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:50.
         Saved subsample: Sample8_5-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:50.
         Saved subsample: Sample8_6-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:50.
+        Saved subsample: Sample8_7-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:51.
 
 
 Processing Sample9:
@@ -197,8 +149,8 @@ Processing Sample9:
         Total number of scans: 1446
         Total duration of scans: 1 day, 1:53:33
 
-        Global max value: 2.671271089311142
-        Global min value: 1.5142951663666107
+        Global max value: 2.6658847728356663
+        Global min value: 1.5214542061559444
         Normalizing the data...
 
         Saved subsample: Sample9_1-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:36.
@@ -207,6 +159,7 @@ Processing Sample9:
         Saved subsample: Sample9_4-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:36.
         Saved subsample: Sample9_5-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:36.
         Saved subsample: Sample9_6-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:37.
+        Saved subsample: Sample9_7-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:37.
 
 
 Processing Sample10:
@@ -214,8 +167,8 @@ Processing Sample10:
         Total number of scans: 1447
         Total duration of scans: 1 day, 1:59:36
 
-        Global max value: 2.613477401011944
-        Global min value: 1.5025450954087496
+        Global max value: 2.6062971730728934
+        Global min value: 1.508908928158946
         Normalizing the data...
 
         Saved subsample: Sample10_1-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:17.
@@ -224,6 +177,7 @@ Processing Sample10:
         Saved subsample: Sample10_4-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:16.
         Saved subsample: Sample10_5-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:17.
         Saved subsample: Sample10_6-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:10.
+        Saved subsample: Sample10_7-n.csv with 103 scan(s) and total time delta of 1 day, 1:40:10.
 
 
 Processing Sample11:
@@ -231,8 +185,8 @@ Processing Sample11:
         Total number of scans: 1413
         Total duration of scans: 1 day, 1:38:02
 
-        Global max value: 2.6424616858116527
-        Global min value: 1.5147323582287608
+        Global max value: 2.6392389964403775
+        Global min value: 1.5124635631039542
         Normalizing the data...
 
         Saved subsample: Sample11_1-n.csv with 101 scan(s) and total time delta of 1 day, 1:25:59.
@@ -241,6 +195,7 @@ Processing Sample11:
         Saved subsample: Sample11_4-n.csv with 101 scan(s) and total time delta of 1 day, 1:26:01.
         Saved subsample: Sample11_5-n.csv with 101 scan(s) and total time delta of 1 day, 1:26:02.
         Saved subsample: Sample11_6-n.csv with 101 scan(s) and total time delta of 1 day, 1:26:03.
+        Saved subsample: Sample11_7-n.csv with 101 scan(s) and total time delta of 1 day, 1:26:03.
 
 
 Processing Sample12:
@@ -248,8 +203,8 @@ Processing Sample12:
         Total number of scans: 1442
         Total duration of scans: 1 day, 1:46:34
 
-        Global max value: 2.6972316856664897
-        Global min value: 1.5074985849719578
+        Global max value: 2.6948375500331845
+        Global min value: 1.502814217444118
         Normalizing the data...
 
         Saved subsample: Sample12_1-n.csv with 103 scan(s) and total time delta of 1 day, 1:41:10.
@@ -258,6 +213,7 @@ Processing Sample12:
         Saved subsample: Sample12_4-n.csv with 103 scan(s) and total time delta of 1 day, 1:41:11.
         Saved subsample: Sample12_5-n.csv with 103 scan(s) and total time delta of 1 day, 1:41:10.
         Saved subsample: Sample12_6-n.csv with 103 scan(s) and total time delta of 1 day, 1:41:10.
+        Saved subsample: Sample12_7-n.csv with 102 scan(s) and total time delta of 1 day, 1:26:04.
 
 
 Processing Sample13:
@@ -265,8 +221,8 @@ Processing Sample13:
         Total number of scans: 1452
         Total duration of scans: 1 day, 2:02:03
 
-        Global max value: 2.679214929580543
-        Global min value: 1.5064865726768837
+        Global max value: 2.673751357263665
+        Global min value: 1.5186993969801987
         Normalizing the data...
 
         Saved subsample: Sample13_1-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:35.
@@ -275,6 +231,7 @@ Processing Sample13:
         Saved subsample: Sample13_4-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:35.
         Saved subsample: Sample13_5-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:35.
         Saved subsample: Sample13_6-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:35.
+        Saved subsample: Sample13_7-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:35.
 
 
 Processing Sample14:
@@ -282,8 +239,8 @@ Processing Sample14:
         Total number of scans: 598
         Total duration of scans: 10:43:55
 
-        Global max value: 2.698486152341475
-        Global min value: 1.5332524911030727
+        Global max value: 2.6836806554750225
+        Global min value: 1.5333474648634695
         Normalizing the data...
 
         Saved subsample: Sample14_1-n.csv with 43 scan(s) and total time delta of 10:34:13.
@@ -292,6 +249,7 @@ Processing Sample14:
         Saved subsample: Sample14_4-n.csv with 43 scan(s) and total time delta of 10:34:13.
         Saved subsample: Sample14_5-n.csv with 43 scan(s) and total time delta of 10:34:12.
         Saved subsample: Sample14_6-n.csv with 43 scan(s) and total time delta of 10:34:12.
+        Saved subsample: Sample14_7-n.csv with 43 scan(s) and total time delta of 10:34:13.
 
 
 Processing Sample15:
@@ -299,8 +257,8 @@ Processing Sample15:
         Total number of scans: 1382
         Total duration of scans: 1 day, 0:40:36
 
-        Global max value: 2.7308308246450346
-        Global min value: 1.4938958442372572
+        Global max value: 2.7305903337305315
+        Global min value: 1.5031165859377298
         Normalizing the data...
 
         Saved subsample: Sample15_1-n.csv with 99 scan(s) and total time delta of 1 day, 0:40:36.
@@ -309,6 +267,7 @@ Processing Sample15:
         Saved subsample: Sample15_4-n.csv with 98 scan(s) and total time delta of 1 day, 0:25:27.
         Saved subsample: Sample15_5-n.csv with 98 scan(s) and total time delta of 1 day, 0:25:28.
         Saved subsample: Sample15_6-n.csv with 98 scan(s) and total time delta of 1 day, 0:25:28.
+        Saved subsample: Sample15_7-n.csv with 98 scan(s) and total time delta of 1 day, 0:25:27.
 
 
 Processing Sample16:
@@ -316,8 +275,8 @@ Processing Sample16:
         Total number of scans: 1519
         Total duration of scans: 1 day, 3:10:20
 
-        Global max value: 2.6798196210731278
-        Global min value: 1.5182989516487337
+        Global max value: 2.6749199140189748
+        Global min value: 1.5253299409041488
         Normalizing the data...
 
         Saved subsample: Sample16_1-n.csv with 108 scan(s) and total time delta of 1 day, 2:56:18.
@@ -326,6 +285,7 @@ Processing Sample16:
         Saved subsample: Sample16_4-n.csv with 108 scan(s) and total time delta of 1 day, 2:56:18.
         Saved subsample: Sample16_5-n.csv with 108 scan(s) and total time delta of 1 day, 2:56:18.
         Saved subsample: Sample16_6-n.csv with 108 scan(s) and total time delta of 1 day, 2:56:19.
+        Saved subsample: Sample16_7-n.csv with 108 scan(s) and total time delta of 1 day, 2:56:19.
 
 
 Processing Sample17:
@@ -333,8 +293,8 @@ Processing Sample17:
         Total number of scans: 1422
         Total duration of scans: 1 day, 1:21:44
 
-        Global max value: 2.688710906064542
-        Global min value: 1.5072483626596818
+        Global max value: 2.688891107543885
+        Global min value: 1.5124923334896947
         Normalizing the data...
 
         Saved subsample: Sample17_1-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:53.
@@ -343,6 +303,7 @@ Processing Sample17:
         Saved subsample: Sample17_4-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:52.
         Saved subsample: Sample17_5-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:52.
         Saved subsample: Sample17_6-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:52.
+        Saved subsample: Sample17_7-n.csv with 101 scan(s) and total time delta of 1 day, 1:09:52.
 
 
 Processing Sample18:
@@ -350,8 +311,8 @@ Processing Sample18:
         Total number of scans: 1375
         Total duration of scans: 1 day, 0:38:58
 
-        Global max value: 2.6251585482162056
-        Global min value: 1.4850644343006345
+        Global max value: 2.616202395933658
+        Global min value: 1.49093235671524
         Normalizing the data...
 
         Saved subsample: Sample18_1-n.csv with 98 scan(s) and total time delta of 1 day, 0:24:57.
@@ -360,6 +321,7 @@ Processing Sample18:
         Saved subsample: Sample18_4-n.csv with 98 scan(s) and total time delta of 1 day, 0:24:57.
         Saved subsample: Sample18_5-n.csv with 98 scan(s) and total time delta of 1 day, 0:24:57.
         Saved subsample: Sample18_6-n.csv with 98 scan(s) and total time delta of 1 day, 0:24:58.
+        Saved subsample: Sample18_7-n.csv with 98 scan(s) and total time delta of 1 day, 0:24:57.
 
 
 Processing Sample19:
@@ -367,8 +329,8 @@ Processing Sample19:
         Total number of scans: 1342
         Total duration of scans: 1 day, 0:00:43
 
-        Global max value: 2.6906501472473563
-        Global min value: 1.5405234697924517
+        Global max value: 2.6874375167517996
+        Global min value: 1.5466280034744848
         Normalizing the data...
 
         Saved subsample: Sample19_1-n.csv with 96 scan(s) and total time delta of 23:55:16.
@@ -377,6 +339,7 @@ Processing Sample19:
         Saved subsample: Sample19_4-n.csv with 96 scan(s) and total time delta of 23:55:17.
         Saved subsample: Sample19_5-n.csv with 96 scan(s) and total time delta of 23:55:19.
         Saved subsample: Sample19_6-n.csv with 96 scan(s) and total time delta of 23:55:19.
+        Saved subsample: Sample19_7-n.csv with 95 scan(s) and total time delta of 23:40:03.
 
 
 Processing Sample20:
@@ -384,8 +347,8 @@ Processing Sample20:
         Total number of scans: 1386
         Total duration of scans: 1 day, 0:48:52
 
-        Global max value: 2.7252880747160977
-        Global min value: 1.5228496975245571
+        Global max value: 2.7212211769072416
+        Global min value: 1.5349612994623967
         Normalizing the data...
 
         Saved subsample: Sample20_1-n.csv with 99 scan(s) and total time delta of 1 day, 0:40:17.
@@ -394,6 +357,7 @@ Processing Sample20:
         Saved subsample: Sample20_4-n.csv with 99 scan(s) and total time delta of 1 day, 0:40:17.
         Saved subsample: Sample20_5-n.csv with 99 scan(s) and total time delta of 1 day, 0:40:17.
         Saved subsample: Sample20_6-n.csv with 99 scan(s) and total time delta of 1 day, 0:40:17.
+        Saved subsample: Sample20_7-n.csv with 99 scan(s) and total time delta of 1 day, 0:40:14.
 
 
 Processing Sample21:
@@ -401,8 +365,8 @@ Processing Sample21:
         Total number of scans: 1412
         Total duration of scans: 1 day, 1:31:52
 
-        Global max value: 2.564434383898526
-        Global min value: 1.5118203448647327
+        Global max value: 2.5618111741449505
+        Global min value: 1.517488396066994
         Normalizing the data...
 
         Saved subsample: Sample21_1-n.csv with 101 scan(s) and total time delta of 1 day, 1:20:56.
@@ -411,6 +375,7 @@ Processing Sample21:
         Saved subsample: Sample21_4-n.csv with 101 scan(s) and total time delta of 1 day, 1:20:59.
         Saved subsample: Sample21_5-n.csv with 101 scan(s) and total time delta of 1 day, 1:20:59.
         Saved subsample: Sample21_6-n.csv with 101 scan(s) and total time delta of 1 day, 1:21:01.
+        Saved subsample: Sample21_7-n.csv with 101 scan(s) and total time delta of 1 day, 1:21:01.
 
 
 Processing Sample22:
@@ -418,8 +383,8 @@ Processing Sample22:
         Total number of scans: 1453
         Total duration of scans: 1 day, 2:06:05
 
-        Global max value: 2.671179793294591
-        Global min value: 1.5020079274610922
+        Global max value: 2.663777409952742
+        Global min value: 1.5042852751926055
         Normalizing the data...
 
         Saved subsample: Sample22_1-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:18.
@@ -428,3 +393,4 @@ Processing Sample22:
         Saved subsample: Sample22_4-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:17.
         Saved subsample: Sample22_5-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:18.
         Saved subsample: Sample22_6-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:17.
+        Saved subsample: Sample22_7-n.csv with 104 scan(s) and total time delta of 1 day, 1:55:17.
